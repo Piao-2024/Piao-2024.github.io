@@ -16,14 +16,21 @@ nav:
   # Whether to fix navigation bar
   fixed: false
 
-menu:       #必须是 /xxx/，后面||分开，然后写图标名，如果不想显示图标，图标名可不写
-    首页: / || fas fa-home
-    清单||fas fa-list:
-      音乐: /music/ || fas fa-music
-      电影: /movies/ || fas fa-video
-      游戏: /games/ || fas fa-gamepad
-    友链: /link/ || fas fa-link
-    关于: /about/ || fas fa-heart
+menu:
+  主页: / || fas fa-home
+  博文 || fa fa-graduation-cap:
+    分类: /categories/ || fa fa-archive
+    标签: /tags/ || fa fa-tags
+    归档: /archives/ || fa fa-folder-open
+  生活 || fas fa-list:
+    相册: /photos/ || fa fa-camera-retro
+    音乐: /music/ || fa fa-music
+    影视: /movies/ || fas fa-video
+  友链: /links/ || fa fa-link
+  留言板: /comment/ || fa fa-paper-plane
+  #留言板: /messageboard/ || fa fa-paper-plane
+  关于笔者: /about/ || fas fa-heart 
+  #必须是 /xxx/，后面||分开，然后写图标名，如果不想显示图标，图标名可不写
 # --------------------------------------
 # Code Blocks Settings
 # --------------------------------------
@@ -350,8 +357,6 @@ aside:
     # Formal: Month/Day/Year Time or Year/Month/Day Time
     # Leave it empty if you don't enable this feature
     runtime_date:
-      enable: false
-      publish_date: 5/25/2025 08:00:00
 
 # --------------------------------------
 # Bottom right button
@@ -425,7 +430,7 @@ copy:
 
 # Need to install the hexo-wordcount plugin
 wordcount:
-  enable: false
+  enable: true
   # Display the word count of the article in post meta
   post_wordcount: true
   # Display the time to read the article in post meta
