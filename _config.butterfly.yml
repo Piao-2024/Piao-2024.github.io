@@ -16,12 +16,14 @@ nav:
   # Whether to fix navigation bar
   fixed: false
 
-menu:
-    Home: / || fas fa-home
-  # List||fas fa-list:
-    Music: /music/ || fas fa-music
-  # Movie: /movies/ || fas fa-video
-
+menu:       #必须是 /xxx/，后面||分开，然后写图标名，如果不想显示图标，图标名可不写
+    首页: / || fas fa-home
+    清单||fas fa-list:
+      音乐: /music/ || fas fa-music
+      电影: /movies/ || fas fa-video
+      游戏: /games/ || fas fa-gamepad
+    友链: /link/ || fas fa-link
+    关于: /about/ || fas fa-heart
 # --------------------------------------
 # Code Blocks Settings
 # --------------------------------------
@@ -68,7 +70,7 @@ default_top_img:
 index_img: /img/Mount_Fuji.png
 
 # The banner image of archive page
-archive_img:
+archive_img: /img/Mount_Fuji.png
 
 # Note: tag page, not tags page
 tag_img:
@@ -91,7 +93,8 @@ footer_img: false
 
 # Website Background
 # Can set it to color or image url
-background:
+background: /img/fuji.jpg
+
 
 cover:
   # Disable the cover or not
@@ -347,6 +350,8 @@ aside:
     # Formal: Month/Day/Year Time or Year/Month/Day Time
     # Leave it empty if you don't enable this feature
     runtime_date:
+      enable: false
+      publish_date: 5/25/2025 08:00:00
 
 # --------------------------------------
 # Bottom right button
@@ -866,7 +871,7 @@ fireworks:
 
 # Mouse click effects: Heart symbol
 click_heart:
-  enable: false
+  enable: True
   mobile: false
 
 # Mouse click effects: words
