@@ -1,7 +1,13 @@
+---
+titile: 首页
+date: 2025/5/28
+aside: false
+comment: true
+---
+
+
 <div class="gallery-group-main">
-{% galleryGroup '15' 'Soul Boy' '\gallery\Khalil_Fong' https://p1.ssl.qhimg.com/t01249ac1aabb2ac628.jpg %}
-{% galleryGroup name description link img-url %}
-{% galleryGroup name description link img-url %}
+{% galleryGroup '15' 'Soul Boy' '/gallery/Khalil_Fong' https://p1.ssl.qhimg.com/t01249ac1aabb2ac628.jpg %}
 </div>
 
 
