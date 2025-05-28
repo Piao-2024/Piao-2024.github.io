@@ -71,7 +71,7 @@ avatar:
 disable_top_img: false
 
 # If the banner of page not setting, it will show the default_top_img
-default_top_img:
+default_top_img: /img/Mount_Fuji.png
 
 # The banner image of index page
 index_img: /img/Mount_Fuji.png
@@ -80,20 +80,19 @@ index_img: /img/Mount_Fuji.png
 archive_img: /img/Mount_Fuji.png
 
 # Note: tag page, not tags page
-tag_img:
+tag_img: 
 
 # The banner image of tag page, you can set the banner image for each tag
 # Format:
 #  - tag name: xxxxx
-tag_per_img:
-
+tag_per_img: 
 # Note: category page, not categories page
-category_img:
+category_img: 
 
 # The banner image of category page, you can set the banner image for each category
 # Format:
 #  - category name: xxxxx
-category_per_img:
+category_per_img: 
 
 # The background image of footer
 footer_img: false
