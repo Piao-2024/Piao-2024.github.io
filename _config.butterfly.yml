@@ -17,13 +17,13 @@ nav:
   fixed: false
 
 menu:
-  主页: / || fas fa-home
+  Home: / || fas fa-home
   博文 || fa fa-graduation-cap:
     分类: /categories/ || fa fa-archive
     标签: /tags/ || fa fa-tags
     归档: /archives/ || fa fa-folder-open
   生活 || fas fa-list:
-    相册: /photos/ || fa fa-camera-retro
+    Album: /gallery/ || fa fa-camera-retro
     音乐: /music/ || fa fa-music
     影视: /movies/ || fas fa-video
   友链: /links/ || fa fa-link
@@ -61,11 +61,11 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.png
+favicon: /img/DT.png
 
 avatar:
   img: /img/DT.jpg
-  effect: false
+  effect: true
 
 # Disable all banner images
 disable_top_img: false
