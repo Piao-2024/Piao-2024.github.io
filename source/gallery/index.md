@@ -8,7 +8,7 @@ comment: true
 
 <div class="gallery-group-main">
 {% galleryGroup '15' 'Soul Boy' '/gallery/方大同' https://p1.ssl.qhimg.com/t01249ac1aabb2ac628.jpg %}
-{% galleryGroup '壁纸' 'Bing每天推送的好看壁纸' '/gallery/Wallpaper' img-url %}
+{% galleryGroup '壁纸' 'Bing每天推送的好看壁纸' '/gallery/Wallpaper' https://h2.gifposter.com/bingImages/PenguinDirections_1920x1080.jpg %}
 </div>
 
 
