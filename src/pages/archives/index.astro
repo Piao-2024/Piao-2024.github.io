@@ -1,0 +1,101 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import Card from "@/components/Card.astro";
+import { postFilter } from "@/utils/postFilter";
+import { getPostsByGroupCondition } from "./_utils/getPostsByGroupCondition";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+
+// Redirect to 404 page if `showArchives` config is false
+const notFoundUrl = getRelativeLocaleUrl(locale, "404");
+if (!config.features.showArchives && notFoundUrl) {
+  return Astro.rewrite(notFoundUrl);
+}
+
+const t = useTranslations(locale);
+
+const posts = await getCollection("posts");
+const filteredPosts = posts.filter(postFilter);
+const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
+---
+
+<Layout title={`${t.pages.archivesTitle} | ${config.site.title}`} bodyClass="expanded-identity-body">
+  <div class="expanded-page">
+    <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true"></div>
+    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true"></div>
+    <div class="expanded-shell">
+      <CompactIdentityHeader active="archives" />
+      <div class="expanded-notice">⌁ 沿着时间回看写过的内容。</div>
+      <main id="main-content" class="expanded-panel archive-panel" data-pagefind-body>
+        <div class="expanded-heading">
+          <div><p class="eyebrow">TIMELINE</p><h1>{t.pages.archivesTitle}</h1></div>
+          <span>{filteredPosts.length} 篇文章</span>
+        </div>
+    {
+      Object.entries(
+        getPostsByGroupCondition(filteredPosts, post =>
+          post.data.pubDatetime.getFullYear()
+        )
+      )
+        .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+        .map(([year, yearGroup]) => (
+          <div>
+            <span class="text-2xl font-bold">{year}</span>
+            <sup class="text-muted-foreground text-sm">{yearGroup.length}</sup>
+            {Object.entries(
+              getPostsByGroupCondition(
+                yearGroup,
+                post => post.data.pubDatetime.getMonth() + 1
+              )
+            )
+              .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
+              .map(([month, monthGroup]) => (
+                <div class="flex flex-col sm:flex-row">
+                  <div class="mt-6 min-w-36 text-lg sm:my-6">
+                    <span class="font-bold">
+                      {monthFormatter.format(
+                        new Date(2000, Number(month) - 1, 1)
+                      )}
+                    </span>
+                    <sup class="text-muted-foreground text-xs">
+                      {monthGroup.length}
+                    </sup>
+                  </div>
+                  <ul>
+                    {monthGroup
+                      .sort(
+                        (a, b) =>
+                          Math.floor(
+                            new Date(b.data.pubDatetime).getTime() / 1000
+                          ) -
+                          Math.floor(
+                            new Date(a.data.pubDatetime).getTime() / 1000
+                          )
+                      )
+                      .map(data => (
+                        <Card {...data} />
+                      ))}
+                  </ul>
+                </div>
+              ))}
+          </div>
+        ))
+    }
+      </main>
+      <footer class="expanded-site-footer"><span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong></footer>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  @reference "../../styles/global.css";
+  .archive-panel > :global(div:not(.expanded-heading)) { margin-top:1.5rem; }
+  .archive-panel :global(li) { margin:0; padding:1rem .25rem; border-bottom:1px solid var(--expanded-soft); }
+  .archive-panel :global(a) { color:var(--expanded-accent); }
+  .archive-panel :global(p) { margin-top:.4rem; opacity:.7; }
+</style>

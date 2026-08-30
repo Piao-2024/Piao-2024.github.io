@@ -1,63 +1,49 @@
-# Astro Starter Kit: Blog
+# Piao's Blog
 
-```sh
-npm create astro@latest -- --template blog
+基于 AstroPaper 6 和 Astro 7 重构的个人博客，保留原有文章内容，并提供中文界面、深色模式、标签、归档、全文搜索、RSS、Sitemap 和动态社交分享图。
+
+## 本地开发
+
+要求 Node.js 22.12 或更高版本。
+
+```bash
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+开发地址默认为 `http://localhost:4321`。
 
-Features:
+## 常用操作
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```bash
+npm run build       # 类型检查、静态构建并生成全文搜索索引
+npm run preview     # 预览构建产物
+npm run format      # 格式化代码
+npm run lint        # 代码检查
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 内容位置
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- 文章：`src/content/posts/`
+- 关于页面：`src/content/pages/about.md`
+- 网站配置：`astro-paper.config.ts`
+- 中文界面：`src/i18n/lang/zh-CN.ts`
+- 主题颜色：`src/styles/theme.css`
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+文章使用 Markdown 或 MDX。主要 frontmatter 字段如下：
 
-Any static assets, like images, can be placed in the `public/` directory.
+```yaml
+---
+title: "文章标题"
+description: "文章摘要"
+pubDatetime: 2026-08-30T12:00:00+08:00
+tags: ["技术", "记录"]
+draft: false
+---
+```
 
-## 🧞 Commands
+## 部署
 
-All commands are run from the root of the project, from a terminal:
+推送到 `main` 分支后，`.github/workflows/deploy.yml` 会自动构建并部署到 GitHub Pages。`public/CNAME` 中保留了自定义域名 `lticket.top`。
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+旧的 `/blog/` 和 `/blog/<slug>/` 地址会自动跳转到新的 `/posts/` 路径。

@@ -1,26 +1,353 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getRelativeLocaleUrl } from "astro:i18n";
+import IconMoon from "@/assets/icons/IconMoon.svg";
+import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
+import IconRss from "@/assets/icons/IconRssSocial.svg";
+import Layout from "@/layouts/Layout.astro";
+import Socials from "@/components/Socials.astro";
+import { getAssetPath } from "@/utils/withBase";
+import config from "@/config";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const avatarPath = getAssetPath("avatar.png");
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>Hi, 我是 Piao 👋</h1>
-			<p>
-				Welcome to my blog. 这里记录技术、生活，以及一切有意思的东西。
-			</p>
-			<p>
-				<a href="/blog">看看文章 →</a>
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Layout
+  title="Piao｜关于我"
+  description="你好，我是 Piao。这里是我的个人主页，也是一份持续生长的生活与技术档案。"
+  bodyClass="identity-body"
+>
+  <main id="main-content" class="identity-page">
+    <div class="ambient-shape shape-circle" aria-hidden="true"></div>
+    <div class="ambient-shape shape-triangle" aria-hidden="true"></div>
+    <div class="ambient-shape shape-line" aria-hidden="true"></div>
+
+    <section class="identity-card" aria-labelledby="profile-name" transition:name="identity-card">
+      <nav class="card-nav" aria-label="主要导航">
+        <a
+          class="nav-link is-active"
+          href={getRelativeLocaleUrl(locale, "")}
+          aria-current="page"
+        >关于</a>
+        <a class="nav-link" href={getRelativeLocaleUrl(locale, "posts")}>文章</a>
+        <a class="nav-link" href={getRelativeLocaleUrl(locale, "tags")}>标签</a>
+        <a class="nav-link" href={getRelativeLocaleUrl(locale, "archives")}>归档</a>
+        <button id="theme-btn" class="theme-button" aria-label="切换主题" title="切换主题">
+          <IconMoon class="moon-icon" />
+          <IconSunHigh class="sun-icon" />
+        </button>
+      </nav>
+
+      <div class="card-content">
+        <div class="avatar-area">
+          <div class="avatar">
+            <img src={avatarPath} alt="Piao 的头像" width="736" height="736" />
+          </div>
+          <div class="realtime">
+            <button class="status-trigger" aria-label="查看当前状态">
+              <span aria-hidden="true">🧱</span>
+            </button>
+            <div class="status-popover" role="status">
+              <p><strong>Piao</strong> 正在整理个人博客</p>
+              <span class="split-line"></span>
+              <p>当地时间</p>
+              <time id="local-time" datetime="">GMT+8 --:--:--</time>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-copy">
+          <h1 id="profile-name">Piao <span>@Piao-2024</span></h1>
+          <p>Coding and living.</p>
+          <p class="profile-description">喜欢折腾技术，也认真记录生活。</p>
+        </div>
+
+        <div class="social-row">
+          <div class="profile-socials"><Socials /></div>
+          <a class="social-button" href={`${base}rss.xml`} data-name="RSS" aria-label="订阅 RSS">
+            <IconRss />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="identity-footer">
+      <span>@ {new Date().getFullYear()}</span>
+      <strong>PIAO'S SPACE</strong>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+  @reference "../styles/global.css";
+
+  :global(body.identity-body) {
+    overflow: hidden;
+  }
+
+  .identity-page {
+    --canvas: #c8d2ee;
+    --surface: #ffffff;
+    --accent-soft: #edf1fa;
+    --accent-strong: #6e87cc;
+    position: relative;
+    display: grid;
+    min-height: 100svh;
+    place-items: center;
+    overflow: hidden;
+    padding: 1.25rem;
+    background: var(--canvas);
+    color: #354263;
+  }
+
+  :global(html[data-theme="dark"]) .identity-page {
+    --canvas: #151a2a;
+    --surface: #202638;
+    --accent-soft: #303a58;
+    --accent-strong: #a9b9ed;
+    color: #e8ecf8;
+  }
+
+  .identity-card {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: min(25rem, calc(100vw - 2rem));
+    height: min(31.25rem, calc(100svh - 8.5rem));
+    min-height: 28rem;
+    flex-direction: column;
+    overflow: visible;
+    border-radius: 2rem;
+    background: var(--surface);
+    box-shadow: 0 25px 50px -12px rgb(76 98 157 / .25);
+  }
+
+  .card-nav {
+    display: flex;
+    min-height: 4.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    padding: 1.5rem 1rem;
+    border-radius: 2rem 2rem 0 0;
+  }
+
+  .nav-link {
+    position: relative;
+    z-index: 0;
+    color: var(--accent-strong);
+    font-size: .9rem;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: padding .3s cubic-bezier(.4, 0, .2, 1);
+  }
+
+  .nav-link::before {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    z-index: -1;
+    height: 3px;
+    border-radius: .75rem;
+    background: var(--accent-soft);
+    transition: height .15s cubic-bezier(.4, 0, .2, 1);
+  }
+
+  .nav-link:hover,
+  .nav-link:focus-visible,
+  .nav-link.is-active { padding-inline: .65rem; }
+  .nav-link:hover::before,
+  .nav-link:focus-visible::before,
+  .nav-link.is-active::before { height: 100%; }
+  .nav-link.is-active { pointer-events: none; }
+
+  .theme-button {
+    position: absolute;
+    top: 1.35rem;
+    right: 1rem;
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 9999px;
+    color: var(--accent-strong);
+  }
+  .theme-button svg { grid-area: 1 / 1; width: 1.15rem; transition: opacity .2s, transform .2s; }
+  .sun-icon { opacity: 0; transform: rotate(80deg) scale(.7); }
+  :global(html[data-theme="dark"]) .moon-icon { opacity: 0; transform: rotate(-80deg) scale(.7); }
+  :global(html[data-theme="dark"]) .sun-icon { opacity: 1; transform: none; }
+
+  .card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem 2rem;
+  }
+
+  .avatar-area { position: relative; }
+  .avatar {
+    position: relative;
+    z-index: 1;
+    width: 9rem;
+    height: 9rem;
+  }
+  .avatar img { width:100%; height:100%; object-fit:contain; transition:transform .35s cubic-bezier(.4,0,.2,1); }
+  .avatar:hover img { transform:scale(1.16); }
+
+  .realtime { position: absolute; z-index: 20; right: -2.75rem; top: 2rem; }
+  .status-trigger {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--accent-soft), 0 8px 16px rgb(76 98 157 / .14);
+    font-size: .9rem;
+  }
+  .status-popover {
+    pointer-events: none;
+    position: absolute;
+    z-index: 30;
+    top: -.25rem;
+    left: 2.75rem;
+    width: max-content;
+    max-width: 13rem;
+    padding: .7rem .8rem;
+    border: 1px solid rgb(255 255 255 / .55);
+    border-radius: .75rem;
+    background: rgb(255 255 255 / .76);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+    backdrop-filter: blur(18px) saturate(145%);
+    box-shadow: 0 12px 30px -12px rgb(53 66 99 / .3);
+    font-size: .75rem;
+    line-height: 1.35rem;
+    opacity: 0;
+    transform: translateY(-.5rem) scale(.9);
+    transform-origin: top left;
+    transition: opacity .25s, transform .35s cubic-bezier(.4, 0, .2, 1);
+  }
+  :global(html[data-theme="dark"]) .status-popover {
+    border-color: rgb(255 255 255 / .14);
+    background: rgb(32 38 56 / .76);
+    box-shadow: 0 14px 34px -12px rgb(0 0 0 / .62);
+  }
+  .realtime:hover .status-popover,
+  .realtime:focus-within .status-popover { opacity: 1; transform: none; }
+  .split-line { display: block; height: 2px; margin: .35rem 0; border-radius: 3px; background: var(--accent-soft); }
+  .status-popover time { color: var(--accent-strong); font-weight: 650; }
+
+  .profile-copy { margin-top: 1.25rem; text-align: center; }
+  .profile-copy h1 { font-size: 1.15rem; font-weight: 750; }
+  .profile-copy h1 span { color: var(--accent-strong); font-size: .75rem; font-weight: 500; }
+  .profile-copy > p { margin-top: .35rem; color: var(--accent-strong); font-size: .8rem; }
+  .profile-copy .profile-description { margin-top: .75rem; color: currentColor; opacity: .72; }
+
+  .social-row { display: flex; margin-top: 1.5rem; align-items: center; gap: .75rem; }
+  .profile-socials :global(div) { gap: .75rem; }
+  .profile-socials :global(a),
+  .social-button {
+    position: relative;
+    display: grid;
+    width: 2.375rem;
+    height: 2.375rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-strong);
+    color: rgb(255 255 255 / .92);
+    padding: .55rem;
+    text-decoration: none;
+  }
+  .profile-socials :global(a::before),
+  .social-button::before {
+    content: "";
+    position: absolute;
+    inset: -.375rem;
+    border: 1px solid var(--accent-soft);
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(.82);
+    transition: opacity .15s, transform .15s;
+  }
+  .profile-socials :global(a:hover::before),
+  .profile-socials :global(a:focus-visible::before),
+  .social-button:hover::before,
+  .social-button:focus-visible::before { opacity: 1; transform: none; }
+  .social-button::after {
+    content: attr(data-name);
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + .75rem);
+    left: 50%;
+    width: max-content;
+    padding: .3rem .65rem;
+    border-radius: .65rem;
+    background: var(--accent-strong);
+    color: rgb(255 255 255 / .94);
+    font-size: .72rem;
+    font-weight: 600;
+    line-height: 1.2;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -.45rem) scale(.92);
+    transform-origin: top center;
+    transition: opacity 160ms ease, transform 220ms cubic-bezier(.4, 0, .2, 1);
+  }
+  .social-button:hover::after,
+  .social-button:focus-visible::after { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  .social-button svg { width: 1.25rem; }
+
+  .identity-footer {
+    position: absolute;
+    z-index: 1;
+    bottom: 1.2rem;
+    left: 50%;
+    display: flex;
+    width: min(25rem, calc(100vw - 2rem));
+    align-items: baseline;
+    justify-content: space-between;
+    color: rgb(255 255 255 / .78);
+  }
+  .identity-footer span { font-size: .85rem; }
+  .identity-footer strong { font-size: 1.6rem; letter-spacing: .04em; }
+
+  .ambient-shape { position: absolute; border: 3px solid rgb(255 255 255 / .10); }
+  .shape-circle { width: 4rem; height: 4rem; top: 9%; left: 9%; border-radius: 50%; }
+  .shape-triangle { width: 5rem; height: 5rem; right: 8%; top: 18%; transform: rotate(28deg); border-radius: 1rem; }
+  .shape-line { width: 9rem; height: 2rem; left: 12%; bottom: 15%; transform: rotate(-35deg); border-width: 0 0 3px; }
+
+  @media (max-width: 31rem) {
+    .card-nav { justify-content: flex-start; gap: .55rem; padding-inline: 1.25rem 3.5rem; }
+    .nav-link { font-size: .82rem; }
+    .identity-footer strong { font-size: 1.15rem; }
+    .status-popover { top: 2.5rem; right: -.5rem; left: auto; transform-origin: top right; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; }
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const localTime = document.querySelector<HTMLTimeElement>("#local-time");
+    const updateLocalTime = () => {
+      if (!localTime) return;
+      const now = new Date();
+      localTime.dateTime = now.toISOString();
+      localTime.textContent = `GMT+8 ${new Intl.DateTimeFormat("zh-CN", {
+        timeZone: "Asia/Shanghai",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      }).format(now)}`;
+    };
+    updateLocalTime();
+    window.setInterval(updateLocalTime, 1000);
+  });
+</script>

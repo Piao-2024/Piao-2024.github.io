@@ -1,0 +1,93 @@
+---
+import config from "@/config";
+import LinkButton from "./LinkButton.astro";
+
+const { site, socials } = config;
+
+const displayNames: Record<string, string> = {
+  github: "GitHub",
+  bilibili: "哔哩哔哩",
+  xiaohongshu: "小红书",
+  x: "X",
+  mail: "邮箱",
+  telegram: "Telegram",
+};
+const solidIcons = new Set(["bilibili"]);
+
+const icons = import.meta.glob<{
+  default: (_props: Record<string, unknown>) => unknown;
+}>("/src/assets/icons/socials/*.svg");
+
+const items = await Promise.all(
+  socials.map(async ({ name, url, linkTitle }) => {
+    const mod = await icons[`/src/assets/icons/socials/${name}.svg`]?.();
+    const Icon = mod?.default;
+    const title =
+      linkTitle ??
+      (url.startsWith("mailto:") || name === "mail"
+        ? `Send an email to ${site.title}`
+        : `${site.title} on ${name.charAt(0).toUpperCase() + name.slice(1)}`);
+    return {
+      url,
+      title,
+      displayName: displayNames[name] ?? name,
+      solid: solidIcons.has(name),
+      Icon,
+    };
+  })
+);
+---
+
+<div class="flex flex-wrap items-center gap-1">
+  {
+    items.map(({ url, title, displayName, solid, Icon }) =>
+      Icon ? (
+        <LinkButton
+          href={url}
+          class="social-link p-2 sm:p-1"
+          title={title}
+          data-name={displayName}
+        >
+          <Icon
+            class:list={[
+              "inline-block size-5 opacity-90",
+              { "fill-current stroke-none": solid },
+              { "fill-transparent stroke-current stroke-2": !solid },
+            ]}
+          />
+          <span class="sr-only">{title}</span>
+        </LinkButton>
+      ) : null
+    )
+  }
+</div>
+
+<style>
+  @reference "../styles/global.css";
+  .social-link { position:relative; }
+  .social-link::after {
+    content: attr(data-name);
+    position:absolute;
+    z-index:20;
+    top:calc(100% + .75rem);
+    left:50%;
+    width:max-content;
+    padding:.3rem .65rem;
+    border-radius:.65rem;
+    background:var(--accent);
+    color:var(--accent-foreground);
+    font-size:.72rem;
+    font-weight:600;
+    line-height:1.2;
+    opacity:0;
+    pointer-events:none;
+    transform:translate(-50%,-.45rem) scale(.92);
+    transform-origin:top center;
+    transition:opacity 160ms ease,transform 220ms cubic-bezier(.4,0,.2,1);
+  }
+  .social-link:hover::after,
+  .social-link:focus-visible::after {
+    opacity:1;
+    transform:translate(-50%,0) scale(1);
+  }
+</style>

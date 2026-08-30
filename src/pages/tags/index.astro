@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import Tag from "@/components/Tag.astro";
+import { getUniqueTags } from "@/utils/getUniqueTags";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+const tags = getUniqueTags(posts);
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+---
+
+<Layout title={`${t.pages.tagsTitle} | ${config.site.title}`} bodyClass="expanded-identity-body">
+  <div class="expanded-page">
+    <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true"></div>
+    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true"></div>
+    <div class="expanded-shell">
+      <CompactIdentityHeader active="tags" />
+      <div class="expanded-notice"># 按主题浏览我的全部记录。</div>
+      <main id="main-content" class="expanded-panel" data-pagefind-body>
+        <div class="expanded-heading">
+          <div><p class="eyebrow">TOPICS</p><h1>{t.pages.tagsTitle}</h1></div>
+          <span>{tags.length} 个主题</span>
+        </div>
+        <ul class="tag-cloud">
+          {tags.map(({ tag, tagName }) => <Tag {tag} {tagName} />)}
+        </ul>
+      </main>
+      <footer class="expanded-site-footer"><span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong></footer>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  @reference "../../styles/global.css";
+  .tag-cloud { display:flex; flex-wrap:wrap; gap:1rem; padding:1.5rem .25rem .5rem; }
+  .tag-cloud :global(a) { padding:.65rem .9rem; border:0; border-radius:9999px; background:var(--expanded-soft); color:var(--expanded-accent); text-decoration:none; transition:transform .15s,box-shadow .15s; }
+  .tag-cloud :global(a:hover) { margin-top:0; transform:translateY(-2px); box-shadow:0 8px 18px -12px rgb(76 98 110 / .45); }
+</style>
