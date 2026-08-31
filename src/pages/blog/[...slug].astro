@@ -1,9 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
+import { postFilter } from "@/utils/postFilter";
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts');
-  return posts.map(post => ({ params: { slug: post.id }, props: { slug: post.id } }));
+  const posts = await getCollection("posts");
+  return posts
+    .filter(postFilter)
+    .map(post => ({ params: { slug: post.id }, props: { slug: post.id } }));
 }
 
 const { slug } = Astro.props;
@@ -18,5 +21,9 @@ const target = new URL(`/posts/${slug}/`, Astro.site);
     <link rel="canonical" href={target} />
     <title>文章已迁移</title>
   </head>
-  <body><p>文章地址已更新，正在前往 <a href={target.pathname}>{target.pathname}</a>。</p></body>
+  <body
+    ><p>
+      文章地址已更新，正在前往 <a href={target.pathname}>{target.pathname}</a>。
+    </p></body
+  >
 </html>

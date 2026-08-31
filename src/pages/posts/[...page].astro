@@ -10,7 +10,7 @@ import { useTranslations } from "@/i18n";
 import config from "@/config";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const posts = await getCollection("posts", ({ data }) => !data.draft);
+  const posts = await getCollection("posts");
   return paginate(getSortedPosts(posts), { pageSize: config.posts.perPage });
 }) satisfies GetStaticPaths;
 
@@ -20,7 +20,10 @@ const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
 ---
 
-<Layout title={`${t.pages.postsTitle} | ${config.site.title}`} bodyClass="expanded-identity-body">
+<Layout
+  title={`${t.pages.postsTitle} | ${config.site.title}`}
+  bodyClass="expanded-identity-body"
+>
   <div class="expanded-page">
     <div class="ambient-shape shape-circle" aria-hidden="true"></div>
     <div class="ambient-shape shape-line" aria-hidden="true"></div>
@@ -53,23 +56,138 @@ const t = useTranslations(locale);
 
 <style>
   @reference "../../styles/global.css";
-  :global(body.expanded-identity-body) { --expanded-canvas:#d8e0e5; --expanded-surface:#fff; --expanded-soft:#eaf0f4; --expanded-accent:#718ca2; --expanded-text:#3d4e5b; background:var(--expanded-canvas); }
-  :global(html[data-theme="dark"] body.expanded-identity-body) { --expanded-canvas:#151c21; --expanded-surface:#202a31; --expanded-soft:#303e48; --expanded-accent:#a9bfd0; --expanded-text:#e9f0f4; }
-  .expanded-page { position:relative; min-height:100svh; overflow:hidden; background:var(--expanded-canvas); color:var(--expanded-text); }
-  .expanded-shell { position:relative; z-index:1; width:min(64rem,calc(100% - 2rem)); margin:0 auto; padding:1rem 0 1.5rem; }
-  .notice-strip { width:min(32rem,100%); margin-top:.75rem; padding:.65rem 1rem; border-radius:9999px; background:var(--expanded-surface); box-shadow:0 12px 30px -18px rgb(76 98 110 / .28); color:var(--expanded-accent); font-size:.8rem; }
-  .posts-panel { margin-top:.75rem; padding:1.5rem 2rem; border-radius:2rem; background:var(--expanded-surface); box-shadow:0 25px 50px -22px rgb(76 98 110 / .3); }
-  .panel-heading { display:flex; align-items:end; justify-content:space-between; gap:1rem; padding-bottom:1rem; border-bottom:1px solid var(--expanded-soft); }
-  .panel-heading p { color:var(--expanded-accent); font-size:.68rem; font-weight:750; letter-spacing:.18em; }
-  .panel-heading h1 { margin-top:.35rem; font-size:1.6rem; font-weight:750; }
-  .panel-heading span { color:var(--expanded-accent); font-size:.75rem; }
-  .post-list :global(li) { margin:0; padding:1.2rem .25rem; border-bottom:1px solid var(--expanded-soft); }
-  .post-list :global(li:last-child) { border-bottom:0; }
-  .post-list :global(a) { color:var(--expanded-accent); }
-  .post-list :global(p) { margin-top:.45rem; color:var(--expanded-text); opacity:.72; }
-  .expanded-footer { display:flex; align-items:baseline; justify-content:space-between; padding:1rem .25rem 0; color:rgb(255 255 255 / .78); }
-  .expanded-footer span { font-size:.8rem; }.expanded-footer strong{font-size:1.25rem;letter-spacing:.05em}
-  .ambient-shape { position:absolute; border:3px solid rgb(255 255 255 / .1); }
-  .shape-circle { width:5rem;height:5rem;right:8%;top:10%;border-radius:50%; }.shape-line{width:10rem;height:2rem;left:4%;bottom:14%;border-width:0 0 3px;transform:rotate(-32deg)}
-  @media(max-width:40rem){.expanded-shell{width:min(100% - 1rem,64rem);padding-top:.5rem}.posts-panel{padding:1.25rem;border-radius:1.5rem}.panel-heading{align-items:start}.panel-heading span{display:none}}
+  :global(body.expanded-identity-body) {
+    --expanded-canvas: #d8e0e5;
+    --expanded-surface: #fff;
+    --expanded-soft: #eaf0f4;
+    --expanded-accent: #718ca2;
+    --expanded-text: #3d4e5b;
+    background: var(--expanded-canvas);
+  }
+  :global(html[data-theme="dark"] body.expanded-identity-body) {
+    --expanded-canvas: #151c21;
+    --expanded-surface: #202a31;
+    --expanded-soft: #303e48;
+    --expanded-accent: #a9bfd0;
+    --expanded-text: #e9f0f4;
+  }
+  .expanded-page {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    background: var(--expanded-canvas);
+    color: var(--expanded-text);
+  }
+  .expanded-shell {
+    position: relative;
+    z-index: 1;
+    width: min(64rem, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1rem 0 1.5rem;
+  }
+  .notice-strip {
+    width: min(32rem, 100%);
+    margin-top: 0.75rem;
+    padding: 0.65rem 1rem;
+    border-radius: 9999px;
+    background: var(--expanded-surface);
+    box-shadow: 0 12px 30px -18px rgb(76 98 110 / 0.28);
+    color: var(--expanded-accent);
+    font-size: 0.8rem;
+  }
+  .posts-panel {
+    margin-top: 0.75rem;
+    padding: 1.5rem 2rem;
+    border-radius: 2rem;
+    background: var(--expanded-surface);
+    box-shadow: 0 25px 50px -22px rgb(76 98 110 / 0.3);
+  }
+  .panel-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--expanded-soft);
+  }
+  .panel-heading p {
+    color: var(--expanded-accent);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.18em;
+  }
+  .panel-heading h1 {
+    margin-top: 0.35rem;
+    font-size: 1.6rem;
+    font-weight: 750;
+  }
+  .panel-heading span {
+    color: var(--expanded-accent);
+    font-size: 0.75rem;
+  }
+  .post-list :global(li) {
+    margin: 0;
+    padding: 1.2rem 0.25rem;
+    border-bottom: 1px solid var(--expanded-soft);
+  }
+  .post-list :global(li:last-child) {
+    border-bottom: 0;
+  }
+  .post-list :global(a) {
+    color: var(--expanded-accent);
+  }
+  .post-list :global(p) {
+    margin-top: 0.45rem;
+    color: var(--expanded-text);
+    opacity: 0.72;
+  }
+  .expanded-footer {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 1rem 0.25rem 0;
+    color: rgb(255 255 255 / 0.78);
+  }
+  .expanded-footer span {
+    font-size: 0.8rem;
+  }
+  .expanded-footer strong {
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+  }
+  .ambient-shape {
+    position: absolute;
+    border: 3px solid rgb(255 255 255 / 0.1);
+  }
+  .shape-circle {
+    width: 5rem;
+    height: 5rem;
+    right: 8%;
+    top: 10%;
+    border-radius: 50%;
+  }
+  .shape-line {
+    width: 10rem;
+    height: 2rem;
+    left: 4%;
+    bottom: 14%;
+    border-width: 0 0 3px;
+    transform: rotate(-32deg);
+  }
+  @media (max-width: 40rem) {
+    .expanded-shell {
+      width: min(100% - 1rem, 64rem);
+      padding-top: 0.5rem;
+    }
+    .posts-panel {
+      padding: 1.25rem;
+      border-radius: 1.5rem;
+    }
+    .panel-heading {
+      align-items: start;
+    }
+    .panel-heading span {
+      display: none;
+    }
+  }
 </style>
