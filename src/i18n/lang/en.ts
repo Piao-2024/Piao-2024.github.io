@@ -7,6 +7,7 @@ export default {
     tags: "Tags",
     about: "About",
     archives: "Archives",
+    albums: "Albums",
     search: "Search",
   },
   post: {
@@ -49,6 +50,9 @@ export default {
 
     archivesTitle: "Archives",
     archivesDesc: "All the articles I've archived.",
+
+    albumsTitle: "Travel Albums",
+    albumsDesc: "Photography collected by destination.",
 
     searchTitle: "Search",
     searchDesc: "Search any article ...",

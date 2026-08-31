@@ -1,0 +1,135 @@
+---
+import "photoswipe/style.css";
+
+type Photo = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  caption?: string;
+  location?: string;
+};
+
+type Props = { photos: Photo[]; galleryId: string };
+const { photos, galleryId } = Astro.props;
+---
+
+<div class="photo-grid" id={galleryId}>
+  {
+    photos.map((photo, index) => (
+      <a
+        class="photo-item"
+        href={photo.src}
+        data-pswp-width={photo.width}
+        data-pswp-height={photo.height}
+        data-cropped="true"
+        target="_blank"
+        aria-label={`打开第 ${index + 1} 张照片：${photo.alt}`}
+      >
+        <img
+          src={photo.src}
+          width={photo.width}
+          height={photo.height}
+          alt={photo.alt}
+          loading={index < 4 ? "eager" : "lazy"}
+          decoding="async"
+        />
+        <span class="photo-overlay">
+          <strong>{photo.caption ?? photo.alt}</strong>
+          {photo.location && <small>{photo.location}</small>}
+        </span>
+      </a>
+    ))
+  }
+</div>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+
+  let lightbox: PhotoSwipeLightbox | undefined;
+
+  function initPhotoSwipe() {
+    lightbox?.destroy();
+    const gallery = document.querySelector<HTMLElement>(".photo-grid");
+    if (!gallery) return;
+    lightbox = new PhotoSwipeLightbox({
+      gallery,
+      children: "a",
+      pswpModule: () => import("photoswipe"),
+      bgOpacity: 0.92,
+      showHideAnimationType: "zoom",
+      paddingFn: viewport => ({
+        top: viewport.x < 700 ? 24 : 40,
+        bottom: viewport.x < 700 ? 24 : 40,
+        left: viewport.x < 700 ? 12 : 40,
+        right: viewport.x < 700 ? 12 : 40,
+      }),
+    });
+    lightbox.init();
+  }
+
+  initPhotoSwipe();
+  document.addEventListener("astro:page-load", initPhotoSwipe);
+</script>
+
+<style>
+  .photo-grid {
+    columns: 3 16rem;
+    column-gap: 1rem;
+  }
+  .photo-item {
+    position: relative;
+    display: block;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: var(--expanded-soft);
+    box-shadow: 0 14px 30px -25px rgb(48 66 80 / 0.5);
+  }
+  .photo-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .photo-item:hover img {
+    transform: scale(1.025);
+  }
+  .photo-overlay {
+    position: absolute;
+    inset: auto 0 0;
+    display: grid;
+    gap: 0.18rem;
+    padding: 2.4rem 0.9rem 0.8rem;
+    color: #fff;
+    background: linear-gradient(transparent, rgb(15 25 34 / 0.72));
+    opacity: 0;
+    transform: translateY(0.4rem);
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
+  }
+  .photo-item:hover .photo-overlay,
+  .photo-item:focus-visible .photo-overlay {
+    opacity: 1;
+    transform: none;
+  }
+  .photo-overlay strong {
+    font-size: 0.76rem;
+  }
+  .photo-overlay small {
+    font-size: 0.63rem;
+    opacity: 0.76;
+  }
+  @media (max-width: 40rem) {
+    .photo-grid {
+      columns: 2 9rem;
+      column-gap: 0.65rem;
+    }
+    .photo-item {
+      margin-bottom: 0.65rem;
+      border-radius: 0.9rem;
+    }
+  }
+</style>

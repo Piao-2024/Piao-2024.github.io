@@ -1,0 +1,381 @@
+---
+import { getCollection } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Layout from "@/layouts/Layout.astro";
+import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import { PROVINCES } from "@/data/provinces";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+const albums = await getCollection("albums");
+const provinceMap = new Map<
+  number,
+  { slug: string; albumCount: number; photoCount: number }
+>();
+
+for (const album of albums) {
+  const province = provinceMap.get(album.data.province.adcode) ?? {
+    slug: album.data.province.slug,
+    albumCount: 0,
+    photoCount: 0,
+  };
+  province.albumCount += 1;
+  province.photoCount += album.data.photos.length;
+  provinceMap.set(album.data.province.adcode, province);
+}
+
+const provinceItems = PROVINCES.map(province => ({
+  ...province,
+  stats: provinceMap.get(province.adcode),
+}));
+const unlockedCount = provinceItems.filter(province => province.stats).length;
+const unlockProgress = (unlockedCount / PROVINCES.length) * 100;
+const photoCount = albums.reduce(
+  (sum, album) => sum + album.data.photos.length,
+  0
+);
+---
+
+<Layout
+  title={`${t.pages.albumsTitle} | ${config.site.title}`}
+  description={t.pages.albumsDesc}
+  bodyClass="expanded-identity-body"
+>
+  <div class="expanded-page">
+    <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true">
+    </div>
+    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true">
+    </div>
+    <div class="expanded-shell album-shell">
+      <CompactIdentityHeader active="albums" />
+      <div class="expanded-notice">▦ 一格一地，收藏走过的风景。</div>
+      <main
+        id="main-content"
+        class="expanded-panel album-directory-panel"
+        data-pagefind-body
+      >
+        <div class="expanded-heading">
+          <div>
+            <p class="eyebrow">PHOTO JOURNEY</p><h1>{t.pages.albumsTitle}</h1>
+          </div>
+          <span>{albums.length} 个系列 · {photoCount} 张照片</span>
+        </div>
+
+        <section class="journey-progress" aria-label="旅行省份解锁进度">
+          <div class="progress-count">
+            <span>已解锁</span>
+            <p><strong>{unlockedCount}</strong><i>/ {PROVINCES.length}</i></p>
+          </div>
+          <div class="progress-copy">
+            <div>
+              <strong>旅行版图正在慢慢点亮</strong>
+              <span>每到一个新的省份，就在这里留下一个摄影系列。</span>
+            </div>
+            <div
+              class="progress-track"
+              role="progressbar"
+              aria-label="已解锁省份"
+              aria-valuemin="0"
+              aria-valuemax={PROVINCES.length}
+              aria-valuenow={unlockedCount}
+            >
+              <span style={`width: ${unlockProgress}%`}></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="province-directory" aria-labelledby="province-title">
+          <div class="directory-heading">
+            <div>
+              <p>DESTINATIONS</p>
+              <h2 id="province-title">省份目录</h2>
+            </div>
+            <span>点亮的省份可以进入相册</span>
+          </div>
+          <div class="province-grid">
+            {
+              provinceItems.map((province, index) => {
+                const content = (
+                  <>
+                    <span class="province-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h3>{province.name}</h3>
+                      {province.stats ? (
+                        <p>
+                          {province.stats.albumCount} 个系列 ·{" "}
+                          {province.stats.photoCount} 张照片
+                        </p>
+                      ) : (
+                        <p>等待下一次出发</p>
+                      )}
+                    </div>
+                    <span class="province-state">
+                      {province.stats ? "已解锁 ↗" : "未解锁"}
+                    </span>
+                  </>
+                );
+
+                return province.stats ? (
+                  <a
+                    class="province-card unlocked"
+                    href={getRelativeLocaleUrl(
+                      locale,
+                      `album/${province.stats.slug}`
+                    )}
+                    aria-label={`${province.name}，已解锁，${province.stats.albumCount} 个摄影系列`}
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <article class="province-card locked">{content}</article>
+                );
+              })
+            }
+          </div>
+        </section>
+      </main>
+      <footer class="expanded-site-footer">
+        <span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong>
+      </footer>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .album-shell {
+    width: min(74rem, calc(100% - 2rem));
+  }
+  .album-directory-panel {
+    padding-bottom: 1.5rem;
+  }
+  .journey-progress {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1.15rem;
+    padding: 1.15rem 1.25rem;
+    border: 1px solid
+      color-mix(in srgb, var(--expanded-accent) 18%, transparent);
+    border-radius: 1.35rem;
+    background:
+      radial-gradient(
+        circle at 8% 20%,
+        color-mix(in srgb, var(--expanded-accent) 12%, transparent),
+        transparent 35%
+      ),
+      color-mix(in srgb, var(--expanded-soft) 55%, var(--expanded-surface));
+  }
+  .progress-count {
+    min-width: 7rem;
+    padding-right: 1.5rem;
+    border-right: 1px solid
+      color-mix(in srgb, var(--expanded-accent) 18%, transparent);
+  }
+  .progress-count > span {
+    color: var(--expanded-accent);
+    font-size: 0.63rem;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+  }
+  .progress-count p {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+  }
+  .progress-count strong {
+    color: var(--expanded-accent);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+  }
+  .progress-count i {
+    font-size: 0.9rem;
+    font-style: normal;
+    opacity: 0.52;
+  }
+  .progress-copy {
+    min-width: 0;
+  }
+  .progress-copy > div:first-child {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .progress-copy strong {
+    font-size: 0.82rem;
+  }
+  .progress-copy span {
+    color: color-mix(in srgb, var(--expanded-text) 58%, transparent);
+    font-size: 0.68rem;
+  }
+  .progress-track {
+    height: 0.48rem;
+    margin-top: 0.85rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--expanded-accent) 10%, transparent);
+    overflow: hidden;
+  }
+  .progress-track span {
+    display: block;
+    height: 100%;
+    min-width: 0.45rem;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #91abc0, var(--expanded-accent));
+  }
+  .province-directory {
+    margin-top: 1.5rem;
+  }
+  .directory-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+  }
+  .directory-heading p {
+    color: var(--expanded-accent);
+    font-size: 0.58rem;
+    font-weight: 750;
+    letter-spacing: 0.16em;
+  }
+  .directory-heading h2 {
+    margin-top: 0.18rem;
+    font-size: 1.15rem;
+  }
+  .directory-heading > span {
+    color: color-mix(in srgb, var(--expanded-text) 52%, transparent);
+    font-size: 0.65rem;
+  }
+  .province-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr));
+    gap: 0.7rem;
+  }
+  .province-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.8rem;
+    min-height: 6.25rem;
+    padding: 0.9rem;
+    border: 1px solid
+      color-mix(in srgb, var(--expanded-accent) 13%, transparent);
+    border-radius: 1rem;
+    background: color-mix(in srgb, var(--expanded-surface) 72%, transparent);
+    color: inherit;
+    text-decoration: none;
+  }
+  .province-card.unlocked {
+    border-color: color-mix(in srgb, var(--expanded-accent) 34%, transparent);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--expanded-accent) 13%, transparent),
+        transparent 60%
+      ),
+      color-mix(in srgb, var(--expanded-surface) 86%, transparent);
+    box-shadow: 0 16px 38px -30px
+      color-mix(in srgb, var(--expanded-accent) 65%, transparent);
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease,
+      border-color 0.22s ease;
+  }
+  .province-card.unlocked:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--expanded-accent) 55%, transparent);
+    box-shadow: 0 22px 42px -27px
+      color-mix(in srgb, var(--expanded-accent) 72%, transparent);
+  }
+  .province-index {
+    color: var(--expanded-accent);
+    font-family: var(--font-google-sans-code);
+    font-size: 0.62rem;
+    font-weight: 700;
+    opacity: 0.54;
+  }
+  .province-card h3 {
+    padding-right: 3.2rem;
+    font-size: 0.85rem;
+    line-height: 1.35;
+  }
+  .province-card p {
+    margin-top: 0.35rem;
+    color: color-mix(in srgb, var(--expanded-text) 48%, transparent);
+    font-size: 0.63rem;
+  }
+  .province-state {
+    position: absolute;
+    right: 0.8rem;
+    bottom: 0.7rem;
+    color: color-mix(in srgb, var(--expanded-text) 42%, transparent);
+    font-size: 0.58rem;
+  }
+  .unlocked .province-state {
+    color: var(--expanded-accent);
+    font-weight: 700;
+  }
+  .locked {
+    opacity: 0.66;
+  }
+  @media (max-width: 40rem) {
+    .album-shell {
+      width: min(100% - 1rem, 74rem);
+    }
+    .album-directory-panel {
+      padding: 1rem;
+    }
+    .journey-progress {
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+      padding: 1rem;
+    }
+    .progress-count {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0 0.8rem;
+      border-right: 0;
+      border-bottom: 1px solid
+        color-mix(in srgb, var(--expanded-accent) 18%, transparent);
+    }
+    .progress-count p {
+      margin: 0;
+    }
+    .progress-copy > div:first-child {
+      display: grid;
+      gap: 0.2rem;
+    }
+    .directory-heading > span {
+      display: none;
+    }
+    .province-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .province-card {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+      min-height: 6.8rem;
+    }
+    .province-card h3 {
+      padding-right: 0;
+      font-size: 0.78rem;
+    }
+  }
+  @media (max-width: 24rem) {
+    .province-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .province-card.unlocked {
+      transition: none;
+    }
+  }
+</style>

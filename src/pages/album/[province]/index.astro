@@ -1,0 +1,92 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Layout from "@/layouts/Layout.astro";
+import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import AlbumCard from "@/components/gallery/AlbumCard.astro";
+import config from "@/config";
+
+export const getStaticPaths = (async () => {
+  const albums = await getCollection("albums");
+  const provinces = new Map<string, typeof albums>();
+  for (const album of albums) {
+    const slug = album.data.province.slug;
+    provinces.set(slug, [...(provinces.get(slug) ?? []), album]);
+  }
+  return [...provinces.entries()].map(([province, entries]) => ({
+    params: { province },
+    props: { albums: entries },
+  }));
+}) satisfies GetStaticPaths;
+
+const { albums } = Astro.props;
+const province = albums[0].data.province;
+const locale = Astro.currentLocale ?? config.site.lang;
+const photoCount = albums.reduce(
+  (sum, album) => sum + album.data.photos.length,
+  0
+);
+---
+
+<Layout
+  title={`${province.name}摄影相册 | ${config.site.title}`}
+  description={`在${province.name}拍摄的照片与系列。`}
+  bodyClass="expanded-identity-body"
+>
+  <div class="expanded-page">
+    <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true">
+    </div>
+    <div class="expanded-shell">
+      <CompactIdentityHeader active="albums" />
+      <div class="expanded-notice">
+        <a href={getRelativeLocaleUrl(locale, "album")}>← 返回相册目录</a>
+      </div>
+      <main
+        id="main-content"
+        class="expanded-panel province-panel"
+        data-pagefind-body
+      >
+        <div class="expanded-heading">
+          <div>
+            <p class="eyebrow">PROVINCE COLLECTION</p><h1>{province.name}</h1>
+          </div>
+          <span>{albums.length} 个系列 · {photoCount} 张照片</span>
+        </div>
+        <div class="album-grid">
+          {
+            albums.map(album => (
+              <AlbumCard
+                href={getRelativeLocaleUrl(
+                  locale,
+                  `album/${province.slug}/${album.data.slug}`
+                )}
+                title={album.data.title}
+                description={album.data.description}
+                cover={album.data.cover}
+                city={album.data.city}
+                photoCount={album.data.photos.length}
+              />
+            ))
+          }
+        </div>
+      </main>
+      <footer class="expanded-site-footer">
+        <span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong>
+      </footer>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .expanded-notice a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: 1.1rem;
+    padding-top: 1.25rem;
+  }
+</style>

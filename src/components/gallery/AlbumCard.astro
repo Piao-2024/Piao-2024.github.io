@@ -1,0 +1,99 @@
+---
+type Props = {
+  href: string;
+  title: string;
+  description: string;
+  cover: string;
+  city?: string;
+  photoCount: number;
+};
+
+const { href, title, description, cover, city, photoCount } = Astro.props;
+---
+
+<a class="album-card" href={href}>
+  <div class="cover-wrap">
+    <img src={cover} alt={`${title}相册封面`} loading="lazy" decoding="async" />
+    <span>{photoCount} 张</span>
+  </div>
+  <div class="album-copy">
+    {city && <p>{city}</p>}
+    <h2>{title}</h2>
+    <span>{description}</span>
+  </div>
+</a>
+
+<style>
+  .album-card {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--expanded-soft);
+    border-radius: 1.4rem;
+    background: color-mix(
+      in srgb,
+      var(--expanded-surface) 92%,
+      var(--expanded-soft)
+    );
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 18px 38px -28px rgb(47 66 82 / 0.4);
+    transition:
+      transform 0.25s,
+      box-shadow 0.25s;
+  }
+  .album-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 46px -25px rgb(47 66 82 / 0.5);
+  }
+  .cover-wrap {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: var(--expanded-soft);
+  }
+  .cover-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .album-card:hover img {
+    transform: scale(1.045);
+  }
+  .cover-wrap span {
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.7rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 999px;
+    background: rgb(20 29 37 / 0.66);
+    color: #fff;
+    font-size: 0.65rem;
+    backdrop-filter: blur(10px);
+  }
+  .album-copy {
+    padding: 1rem 1.1rem 1.2rem;
+  }
+  .album-copy p {
+    color: var(--expanded-accent);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .album-copy h2 {
+    margin-top: 0.35rem;
+    font-size: 1.05rem;
+    font-weight: 760;
+  }
+  .album-copy > span {
+    display: -webkit-box;
+    margin-top: 0.45rem;
+    overflow: hidden;
+    color: color-mix(in srgb, var(--expanded-text) 68%, transparent);
+    font-size: 0.76rem;
+    line-height: 1.65;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+</style>

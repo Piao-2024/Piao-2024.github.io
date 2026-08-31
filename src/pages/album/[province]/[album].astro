@@ -1,0 +1,145 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Layout from "@/layouts/Layout.astro";
+import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import PhotoGallery from "@/components/gallery/PhotoGallery.astro";
+import config from "@/config";
+
+export const getStaticPaths = (async () => {
+  const albums = await getCollection("albums");
+  return albums.map(entry => ({
+    params: { province: entry.data.province.slug, album: entry.data.slug },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { title, description, province, city, photos, publishedAt } = entry.data;
+const locale = Astro.currentLocale ?? config.site.lang;
+const dateText = new Intl.DateTimeFormat(locale, {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+}).format(publishedAt);
+---
+
+<Layout
+  title={`${title} | ${province.name}摄影相册`}
+  description={description}
+  ogImage={entry.data.cover}
+  bodyClass="expanded-identity-body"
+>
+  <div class="expanded-page">
+    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true">
+    </div>
+    <div class="expanded-shell photo-shell">
+      <CompactIdentityHeader active="albums" />
+      <div class="expanded-notice">
+        <a href={getRelativeLocaleUrl(locale, `album/${province.slug}`)}
+          >← 返回{province.name}</a>
+      </div>
+      <main
+        id="main-content"
+        class="expanded-panel photo-panel"
+        data-pagefind-body
+      >
+        <div class="album-heading">
+          <div>
+            <p>{province.name}{city ? ` · ${city}` : ""}</p>
+            <h1>{title}</h1>
+            <span>{description}</span>
+          </div>
+          <aside>
+            <strong>{photos.length}</strong><span>PHOTOS</span><small
+              >{dateText}</small>
+          </aside>
+        </div>
+        <PhotoGallery
+          photos={photos}
+          galleryId={`gallery-${entry.id.replace(/[^a-z0-9-]/gi, "-")}`}
+        />
+      </main>
+      <footer class="expanded-site-footer">
+        <span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong>
+      </footer>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .photo-shell {
+    width: min(76rem, calc(100% - 2rem));
+  }
+  .expanded-notice a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .photo-panel {
+    padding-bottom: 2rem;
+  }
+  .album-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1.35rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--expanded-soft);
+  }
+  .album-heading p {
+    color: var(--expanded-accent);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.14em;
+  }
+  .album-heading h1 {
+    margin-top: 0.4rem;
+    font-size: clamp(1.7rem, 4vw, 2.7rem);
+    font-weight: 780;
+  }
+  .album-heading div > span {
+    display: block;
+    max-width: 42rem;
+    margin-top: 0.6rem;
+    color: color-mix(in srgb, var(--expanded-text) 68%, transparent);
+    font-size: 0.78rem;
+    line-height: 1.7;
+  }
+  .album-heading aside {
+    display: grid;
+    min-width: 6rem;
+    text-align: right;
+  }
+  .album-heading aside strong {
+    color: var(--expanded-accent);
+    font-size: 2rem;
+    line-height: 1;
+  }
+  .album-heading aside span {
+    margin-top: 0.2rem;
+    color: var(--expanded-accent);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+  }
+  .album-heading aside small {
+    margin-top: 0.45rem;
+    font-size: 0.62rem;
+    opacity: 0.55;
+  }
+  @media (max-width: 40rem) {
+    .photo-shell {
+      width: min(100% - 1rem, 76rem);
+    }
+    .photo-panel {
+      padding: 1rem;
+    }
+    .album-heading {
+      align-items: start;
+    }
+    .album-heading aside {
+      display: none;
+    }
+  }
+</style>

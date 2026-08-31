@@ -5,7 +5,7 @@ import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import { getAssetPath } from "@/utils/withBase";
 import config from "@/config";
 
-type Props = { active: "posts" | "tags" | "archives" };
+type Props = { active: "posts" | "tags" | "archives" | "albums" };
 const { active } = Astro.props;
 const locale = Astro.currentLocale ?? config.site.lang;
 const avatarPath = getAssetPath("avatar.png");
@@ -18,6 +18,7 @@ const avatarPath = getAssetPath("avatar.png");
     <a class:list={{ active: active === "posts" }} aria-current={active === "posts" ? "page" : undefined} href={getRelativeLocaleUrl(locale, "posts")}>文章</a>
     <a class:list={{ active: active === "tags" }} aria-current={active === "tags" ? "page" : undefined} href={getRelativeLocaleUrl(locale, "tags")}>标签</a>
     <a class:list={{ active: active === "archives" }} aria-current={active === "archives" ? "page" : undefined} href={getRelativeLocaleUrl(locale, "archives")}>归档</a>
+    <a class:list={{ active: active === "albums" }} aria-current={active === "albums" ? "page" : undefined} href={getRelativeLocaleUrl(locale, "album")}>相册</a>
     <button id="theme-btn" class="compact-theme" aria-label="切换主题" title="切换主题">
       <IconMoon class="moon-icon" /><IconSunHigh class="sun-icon" />
     </button>
@@ -44,14 +45,15 @@ const avatarPath = getAssetPath("avatar.png");
     color: var(--expanded-text, #354263);
     box-shadow: 0 25px 50px -20px rgb(76 98 157 / .24);
   }
-  .compact-nav { display: flex; height: 4rem; align-items: center; gap: .65rem; padding: 1rem 1.25rem; }
+  .compact-nav { display: flex; height: 4rem; align-items: center; gap: .65rem; padding: 1rem 1.25rem; overflow-x:auto; scrollbar-width:none; }
+  .compact-nav::-webkit-scrollbar { display:none; }
   .compact-nav a { position: relative; color: var(--expanded-accent, #6e87cc); font-size: .82rem; font-weight: 650; text-decoration: none; }
   .compact-nav a:not(.back-link)::before { content:""; position:absolute; inset:auto 0 0; z-index:-1; height:3px; border-radius:.75rem; background:var(--expanded-soft,#edf1fa); transition:height .15s,padding .3s; }
   .compact-nav a:hover:not(.back-link), .compact-nav a.active { padding-inline:.55rem; }
   .compact-nav a:hover:not(.back-link)::before, .compact-nav a.active::before { height:100%; }
   .compact-nav a.active { pointer-events:none; }
   .back-link { font-size: 1rem !important; }
-  .compact-theme { position: relative; margin-left: auto; display:grid; width:1.8rem; height:1.8rem; place-items:center; color:var(--expanded-accent,#6e87cc); }
+  .compact-theme { position: relative; margin-left: auto; display:grid; width:1.8rem; height:1.8rem; flex:none; place-items:center; color:var(--expanded-accent,#6e87cc); }
   .compact-theme svg { grid-area:1/1; width:1rem; transition:.2s; }
   .sun-icon { opacity:0; transform:rotate(80deg) scale(.7); }
   :global(html[data-theme="dark"]) .moon-icon { opacity:0; transform:rotate(-80deg) scale(.7); }

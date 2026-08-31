@@ -1,0 +1,18 @@
+title: 西湖散步
+slug: west-lake
+province:
+  name: 浙江省
+  slug: zhejiang
+  adcode: 330000
+city: 杭州
+description: 从西湖开始建立的第一本旅行相册。现在使用一张样片演示，之后可以替换为真实摄影作品。
+cover: /gallery/zhejiang/west-lake/sample.png
+publishedAt: 2026-08-31
+photos:
+  - src: /gallery/zhejiang/west-lake/sample.png
+    width: 736
+    height: 736
+    alt: 蓝发角色插画样片
+    caption: 旅行相册的第一张演示图片
+    takenAt: 2026-08-31
+    location: 杭州 · 西湖

@@ -34,4 +34,35 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { posts, pages };
+const albums = defineCollection({
+  loader: glob({
+    pattern: "**/*.{yaml,yml,json}",
+    base: "./src/content/albums",
+  }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    province: z.object({
+      name: z.string(),
+      slug: z.string(),
+      adcode: z.number(),
+    }),
+    city: z.string().optional(),
+    description: z.string(),
+    cover: z.string(),
+    publishedAt: z.coerce.date(),
+    photos: z.array(
+      z.object({
+        src: z.string(),
+        width: z.number().positive(),
+        height: z.number().positive(),
+        alt: z.string(),
+        caption: z.string().optional(),
+        takenAt: z.coerce.date().optional(),
+        location: z.string().optional(),
+      })
+    ),
+  }),
+});
+
+export const collections = { posts, pages, albums };
