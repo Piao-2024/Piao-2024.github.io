@@ -54,6 +54,7 @@ const albums = defineCollection({
     photos: z.array(
       z.object({
         src: z.string(),
+        thumbnail: z.string().optional(),
         width: z.number().positive(),
         height: z.number().positive(),
         alt: z.string(),

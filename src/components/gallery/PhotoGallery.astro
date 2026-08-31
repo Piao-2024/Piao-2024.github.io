@@ -3,6 +3,7 @@ import "photoswipe/style.css";
 
 type Photo = {
   src: string;
+  thumbnail?: string;
   width: number;
   height: number;
   alt: string;
@@ -27,11 +28,12 @@ const { photos, galleryId } = Astro.props;
         aria-label={`打开第 ${index + 1} 张照片：${photo.alt}`}
       >
         <img
-          src={photo.src}
+          src={photo.thumbnail ?? photo.src}
           width={photo.width}
           height={photo.height}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt={photo.alt}
-          loading={index < 4 ? "eager" : "lazy"}
+          loading={index === 0 ? "eager" : "lazy"}
           decoding="async"
         />
         <span class="photo-overlay">

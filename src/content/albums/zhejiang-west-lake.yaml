@@ -5,14 +5,35 @@ province:
   slug: zhejiang
   adcode: 330000
 city: 杭州
-description: 从西湖开始建立的第一本旅行相册。现在使用一张样片演示，之后可以替换为真实摄影作品。
-cover: /gallery/zhejiang/west-lake/sample.png
+description: 沿着西湖散步时留下的湖面、树影与城市片段。
+cover: https://img.lticket.top/zhejiang/hangzhou/west-lake/thumbs/dsc-2891.webp
 publishedAt: 2026-08-31
 photos:
-  - src: /gallery/zhejiang/west-lake/sample.png
-    width: 736
-    height: 736
-    alt: 蓝发角色插画样片
-    caption: 旅行相册的第一张演示图片
-    takenAt: 2026-08-31
+  - src: https://img.lticket.top/zhejiang/hangzhou/west-lake/dsc-2891.webp
+    thumbnail: https://img.lticket.top/zhejiang/hangzhou/west-lake/thumbs/dsc-2891.webp
+    width: 5182
+    height: 2911
+    alt: 杭州西湖摄影作品一
+    caption: 西湖影像 01
+    location: 杭州 · 西湖
+  - src: https://img.lticket.top/zhejiang/hangzhou/west-lake/dsc-2946.webp
+    thumbnail: https://img.lticket.top/zhejiang/hangzhou/west-lake/thumbs/dsc-2946.webp
+    width: 4032
+    height: 6048
+    alt: 杭州西湖摄影作品二
+    caption: 西湖影像 02
+    location: 杭州 · 西湖
+  - src: https://img.lticket.top/zhejiang/hangzhou/west-lake/dsc-2949.webp
+    thumbnail: https://img.lticket.top/zhejiang/hangzhou/west-lake/thumbs/dsc-2949.webp
+    width: 4032
+    height: 6048
+    alt: 杭州西湖摄影作品三
+    caption: 西湖影像 03
+    location: 杭州 · 西湖
+  - src: https://img.lticket.top/zhejiang/hangzhou/west-lake/dsc-2955.webp
+    thumbnail: https://img.lticket.top/zhejiang/hangzhou/west-lake/thumbs/dsc-2955.webp
+    width: 6048
+    height: 2274
+    alt: 杭州西湖摄影作品四
+    caption: 西湖影像 04
     location: 杭州 · 西湖

@@ -1,0 +1,122 @@
+---
+type Props = {
+  eyebrow: string;
+  label: string;
+  value: number;
+  suffix: string;
+  progress?: number;
+};
+
+const { eyebrow, label, value, suffix, progress } = Astro.props;
+const normalizedProgress =
+  progress === undefined ? undefined : Math.max(0, Math.min(progress, 1));
+const progressLength = normalizedProgress
+  ? Math.max(normalizedProgress * 100, 3)
+  : 0;
+---
+
+<article class="album-stat-card" aria-label={`${label}：${value}${suffix}`}>
+  <div class="stat-gauge">
+    <svg viewBox="0 0 120 120" aria-hidden="true">
+      <circle class="gauge-track" cx="60" cy="60" r="49"></circle>
+      <circle
+        class:list={["gauge-value", { counter: progress === undefined }]}
+        cx="60"
+        cy="60"
+        r="49"
+        pathLength="100"
+        stroke-dasharray={progress === undefined
+          ? "100 0"
+          : `${progressLength} ${100 - progressLength}`}></circle>
+    </svg>
+    <p class="stat-number"><strong>{value}</strong><span>{suffix}</span></p>
+  </div>
+  <div class="stat-label">
+    <h2>{label}</h2>
+    <span>{eyebrow}</span>
+  </div>
+</article>
+
+<style>
+  .album-stat-card {
+    display: grid;
+    justify-items: center;
+    min-width: 0;
+    padding: 1.15rem 1rem 1rem;
+    border: 1px solid
+      color-mix(in srgb, var(--expanded-accent) 14%, transparent);
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(
+        circle at 50% 20%,
+        color-mix(in srgb, var(--expanded-accent) 9%, transparent),
+        transparent 48%
+      ),
+      color-mix(in srgb, var(--expanded-soft) 42%, var(--expanded-surface));
+  }
+  .stat-gauge {
+    position: relative;
+    display: grid;
+    width: clamp(7rem, 14vw, 9rem);
+    aspect-ratio: 1;
+    place-items: center;
+  }
+  .stat-gauge svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(
+      0 7px 8px color-mix(in srgb, var(--expanded-accent) 13%, transparent)
+    );
+  }
+  .gauge-track,
+  .gauge-value {
+    fill: none;
+    stroke-width: 10;
+  }
+  .gauge-track {
+    stroke: color-mix(in srgb, var(--expanded-accent) 10%, transparent);
+  }
+  .gauge-value {
+    stroke: var(--expanded-accent);
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 60px 60px;
+  }
+  .gauge-value.counter {
+    opacity: 0.72;
+  }
+  .stat-number {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.28rem;
+  }
+  .stat-number strong {
+    color: var(--expanded-accent);
+    font-size: clamp(1.75rem, 4vw, 2.4rem);
+    line-height: 1;
+  }
+  .stat-number span {
+    color: color-mix(in srgb, var(--expanded-text) 54%, transparent);
+    font-size: 0.78rem;
+    font-weight: 650;
+  }
+  .stat-label {
+    margin-top: 0.7rem;
+    text-align: center;
+  }
+  .stat-label h2 {
+    font-size: 0.8rem;
+  }
+  .stat-label span {
+    display: block;
+    margin-top: 0.24rem;
+    color: color-mix(in srgb, var(--expanded-text) 44%, transparent);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+  }
+</style>
