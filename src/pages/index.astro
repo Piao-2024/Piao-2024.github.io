@@ -5,6 +5,7 @@ import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
 import IconRss from "@/assets/icons/IconRssSocial.svg";
 import Layout from "@/layouts/Layout.astro";
 import Socials from "@/components/Socials.astro";
+import LeetCodeCard from "@/components/LeetCodeCard.astro";
 import { getAssetPath } from "@/utils/withBase";
 import config from "@/config";
 
@@ -70,6 +71,7 @@ const avatarPath = getAssetPath("avatar.png");
             <IconRss />
           </a>
         </div>
+        <LeetCodeCard />
       </div>
     </section>
 
@@ -84,7 +86,7 @@ const avatarPath = getAssetPath("avatar.png");
   @reference "../styles/global.css";
 
   :global(body.identity-body) {
-    overflow: hidden;
+    overflow-x: clip;
   }
 
   .identity-page {
@@ -97,7 +99,7 @@ const avatarPath = getAssetPath("avatar.png");
     min-height: 100svh;
     place-items: center;
     overflow: hidden;
-    padding: 1.25rem;
+    padding: 2rem 1.25rem 5rem;
     background: var(--canvas);
     color: #354263;
   }
@@ -115,8 +117,7 @@ const avatarPath = getAssetPath("avatar.png");
     z-index: 2;
     display: flex;
     width: min(25rem, calc(100vw - 2rem));
-    height: min(31.25rem, calc(100svh - 8.5rem));
-    min-height: 28rem;
+    min-height: 36rem;
     flex-direction: column;
     overflow: visible;
     border-radius: 2rem;
