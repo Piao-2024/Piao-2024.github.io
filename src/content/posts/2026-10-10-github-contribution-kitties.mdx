@@ -1,0 +1,63 @@
+---
+title: "用 Gitfiti 在 GitHub 贡献图上画画吧"
+description: "看到学长的 GitHub 记录能翻到 1970 年，最后在自己的 2023 年贡献图上画了四只猫。"
+pubDatetime: 2026-10-10T00:00:00+08:00
+tags: ["技术", "GitHub", "Git", "记录"]
+draft: false
+---
+
+我在 GitHub 的 2023 年贡献图上画了四只猫，先放图：
+
+![四只不同造型的猫咪贡献图预览](/images/posts/github-contribution-kitties/varied-cats-preview.png)
+
+这张是本地预览，GitHub 上的实际效果在[这里](https://github.com/Piao-2024?tab=overview&from=2023-01-01&to=2023-12-31)。提交都放在 [kitty-2023](https://github.com/Piao-2024/kitty-2023) 这个仓库里。
+
+起因是看到 [RC-CHN 学长的 GitHub 主页](https://github.com/RC-CHN)上居然有 1970 年的贡献记录。好奇搜了一下，找到了[这篇文章](https://xuemeijing.github.io/2023/04/09/2023-04-09-change-your-github-contribution-history-to-1969/)，才知道提交日期可以自己设置。顺着又发现了 [Gitfiti](https://github.com/gelstudios/gitfiti)，还能往绿格子里画图。于是 10 月 9 日让 Codex 帮忙，折腾出了上面这四只猫。
+
+## How to make it
+
+我先建了一个空的 Public 仓库，叫 `kitty-2023`，然后把 Gitfiti 下载到本地：
+
+```bash
+git clone https://github.com/gelstudios/gitfiti.git
+cd gitfiti
+```
+
+想画在 2023 年，就把 `gitfiti.py` 里的 `get_start_date()` 改成：
+
+```python
+def get_start_date():
+    return datetime(2023, 1, 1, 12)
+```
+
+贡献图每列是一周，从星期日开始。2023 年 1 月 1 日刚好也是星期日，用它作起点就能对齐。
+
+接着运行：
+
+```bash
+python3 gitfiti.py
+```
+
+按提示填用户名、仓库名，第一只选自带的 `kitty`，周偏移量填 `0`，Shell 选 Bash，就会生成脚本。这次用的倍率是 1，模板里一个值为 4 的格子就生成四次提交，0 则留空。至于显示成哪种绿色，还要看 GitHub 的颜色等级和这一年已有的贡献。
+
+生成的脚本稍微改了几处：远程仓库还空着，先去掉 `git pull origin main`；初始化用 `git init -b main`，邮箱设成 GitHub 账号关联的邮箱。脚本里的推送单独执行。
+
+画图其实就是靠空提交。拿其中一天举例：
+
+```bash
+GIT_AUTHOR_DATE="2023-01-04T12:00:00+08:00" \
+GIT_COMMITTER_DATE="2023-01-04T12:00:00+08:00" \
+git commit --allow-empty -m "gitfiti"
+```
+
+两个日期一起设，提交就被放到了指定的那一天。GitHub 贡献图看的是作者日期，推送发生在今天也没关系。
+
+最初只画了 Gitfiti 自带的 kitty，后来又让 Codex 帮忙加了眯眼猫、蝴蝶结猫和趴着的猫。这三个是这次新增的模板，Gitfiti 原来没有。
+
+每只占十二周，分别从第 `0、12、24、36` 周开始排。四只加起来一共 **624 次空提交**，日期从 **2023-01-04 到 2023-11-30**。起点虽然设在 1 月 1 日，但前三天的格子是空的，所以没有提交。
+
+## 参考与启发
+
+- 启发自 [RC-CHN 学长的 GitHub 主页](https://github.com/RC-CHN)和[《github 时光机：修改提交历史到 1970 年》](https://xuemeijing.github.io/2023/04/09/2023-04-09-change-your-github-contribution-history-to-1969/)。
+- [Gitfiti](https://github.com/gelstudios/gitfiti)
+- [GitHub 贡献统计规则](https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference)。
