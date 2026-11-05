@@ -44,6 +44,10 @@ Agent 的对话越长，需要处理的上下文通常也越多。用户输入�
 
 它不必等到上下文窗口快满才开始处理，而是在任务执行过程中，及时判断哪些中间结果可以压缩或移出上下文，从源头控制上下文增长。
 
+![Agent 上下文压缩方法示意图](https://cdn.xiaolincoding.com//picgo/05_compression_matrix.png)
+
+*图片来源：小林 coding。*
+
 ## Prompt Caching
 
 理解 Prompt Caching 之前，先看一下 prefill：模型在生成回答前，需要处理输入的 token。如果请求中包含固定的系统提示词和不断增长的对话历史，前面的部分就可能被重复处理。
