@@ -4,11 +4,10 @@ type Props = {
   title: string;
   description: string;
   cover: string;
-  city?: string;
   photoCount: number;
 };
 
-const { href, title, description, cover, city, photoCount } = Astro.props;
+const { href, title, description, cover, photoCount } = Astro.props;
 ---
 
 <a class="album-card" href={href}>
@@ -17,7 +16,6 @@ const { href, title, description, cover, city, photoCount } = Astro.props;
     <span>{photoCount} 张</span>
   </div>
   <div class="album-copy">
-    {city && <p>{city}</p>}
     <h2>{title}</h2>
     <span>{description}</span>
   </div>

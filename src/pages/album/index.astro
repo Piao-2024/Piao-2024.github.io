@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Layout from "@/layouts/Layout.astro";
 import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
-import AlbumStatCard from "@/components/gallery/AlbumStatCard.astro";
 import { PROVINCES } from "@/data/provinces";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -13,12 +12,13 @@ const t = useTranslations(locale);
 const albums = await getCollection("albums");
 const provinceMap = new Map<
   number,
-  { slug: string; albumCount: number; photoCount: number }
+  { slug: string; cover: string; albumCount: number; photoCount: number }
 >();
 
 for (const album of albums) {
   const province = provinceMap.get(album.data.province.adcode) ?? {
     slug: album.data.province.slug,
+    cover: album.data.cover,
     albumCount: 0,
     photoCount: 0,
   };
@@ -60,23 +60,26 @@ const photoCount = albums.reduce(
           <div>
             <p class="eyebrow">PHOTO JOURNEY</p><h1>{t.pages.albumsTitle}</h1>
           </div>
-          <span>{albums.length} 个系列 · {photoCount} 张照片</span>
         </div>
 
-        <section class="album-stats" aria-label="旅行相册统计">
-          <AlbumStatCard
-            eyebrow="DESTINATIONS"
-            label="到过的省份"
-            value={unlockedCount}
-            suffix={`/ ${PROVINCES.length}`}
-            progress={unlockedCount / PROVINCES.length}
-          />
-          <AlbumStatCard
-            eyebrow="PHOTOGRAPHS"
-            label="已上传照片"
-            value={photoCount}
-            suffix="张"
-          />
+        <section class="journey-summary" aria-label="旅行相册统计">
+          <p class="journey-statement">
+            已经走过 <strong>{unlockedCount}</strong> 个省份，留下
+            <strong>{photoCount.toLocaleString(locale)}</strong> 张照片。
+          </p>
+          <div class="journey-progress">
+            <p>
+              China explored <span aria-hidden="true">·</span>
+              {unlockedCount} / {PROVINCES.length}
+              <span aria-hidden="true">·</span>
+              {((unlockedCount / PROVINCES.length) * 100).toFixed(1)}%
+            </p>
+            <div class="journey-progress-track" aria-hidden="true">
+              <span
+                style={`width: ${Math.max((unlockedCount / PROVINCES.length) * 100, 1.5)}%`}
+              ></span>
+            </div>
+          </div>
         </section>
 
         <section class="province-directory" aria-labelledby="province-title">
@@ -98,10 +101,18 @@ const photoCount = albums.reduce(
                   )}
                   aria-label={`${province.name}，${province.stats.albumCount} 个摄影系列`}
                 >
-                  <span class="province-index">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
+                  <div class="province-cover">
+                    <img
+                      src={province.stats.cover}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="province-copy">
+                    <span class="province-index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                     <h3>{province.name}</h3>
                     <p>
                       {province.stats.albumCount} 个系列 ·{" "}
@@ -129,14 +140,59 @@ const photoCount = albums.reduce(
   .album-directory-panel {
     padding-bottom: 1.5rem;
   }
-  .album-stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.85rem;
-    margin-top: 1.15rem;
+  .journey-summary {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 1.1rem;
+    padding: 0.35rem 0.25rem 1.15rem;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--expanded-accent) 16%, transparent);
+  }
+  .journey-statement {
+    color: color-mix(in srgb, var(--expanded-text) 78%, transparent);
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    line-height: 1.6;
+  }
+  .journey-statement strong {
+    color: var(--expanded-accent);
+    font-size: 1.18em;
+    font-weight: 750;
+  }
+  .journey-progress {
+    width: min(18rem, 38%);
+    flex: none;
+  }
+  .journey-progress p {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
+    color: color-mix(in srgb, var(--expanded-text) 48%, transparent);
+    font-family: var(--font-google-sans-code);
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .journey-progress p span {
+    color: var(--expanded-accent);
+    opacity: 0.52;
+  }
+  .journey-progress-track {
+    height: 0.22rem;
+    margin-top: 0.55rem;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--expanded-accent) 11%, transparent);
+  }
+  .journey-progress-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--expanded-accent);
   }
   .province-directory {
-    margin-top: 1.5rem;
+    margin-top: 1.15rem;
   }
   .directory-heading {
     display: flex;
@@ -167,10 +223,11 @@ const photoCount = albums.reduce(
   .province-card {
     position: relative;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    align-items: center;
     gap: 0.8rem;
     min-height: 6.25rem;
-    padding: 0.9rem;
+    padding: 0.65rem;
     border: 1px solid
       color-mix(in srgb, var(--expanded-accent) 13%, transparent);
     border-radius: 1rem;
@@ -201,11 +258,32 @@ const photoCount = albums.reduce(
       color-mix(in srgb, var(--expanded-accent) 72%, transparent);
   }
   .province-index {
+    display: block;
     color: var(--expanded-accent);
     font-family: var(--font-google-sans-code);
     font-size: 0.62rem;
     font-weight: 700;
     opacity: 0.54;
+  }
+  .province-cover {
+    height: 4.9rem;
+    overflow: hidden;
+    border-radius: 0.72rem;
+    background: var(--expanded-soft);
+  }
+  .province-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .province-card:hover .province-cover img {
+    transform: scale(1.06);
+  }
+  .province-copy {
+    min-width: 0;
+    align-self: stretch;
+    padding: 0.3rem 0 1rem;
   }
   .province-card h3 {
     padding-right: 3.2rem;
@@ -240,8 +318,16 @@ const photoCount = albums.reduce(
     .album-directory-panel {
       padding: 1rem;
     }
-    .album-stats {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .journey-summary {
+      display: block;
+      padding-bottom: 1rem;
+    }
+    .journey-progress {
+      width: 100%;
+      margin-top: 0.75rem;
+    }
+    .journey-progress p {
+      justify-content: flex-start;
     }
     .directory-heading > span {
       display: none;
@@ -250,18 +336,13 @@ const photoCount = albums.reduce(
       grid-template-columns: 1fr;
     }
     .province-card {
-      grid-template-columns: 1fr;
-      gap: 0.25rem;
-      min-height: 6.8rem;
+      grid-template-columns: 4.75rem minmax(0, 1fr);
+      gap: 0.75rem;
+      min-height: 6.1rem;
     }
     .province-card h3 {
-      padding-right: 0;
+      padding-right: 3rem;
       font-size: 0.78rem;
-    }
-  }
-  @media (max-width: 30rem) {
-    .album-stats {
-      grid-template-columns: 1fr;
     }
   }
   @media (prefers-reduced-motion: reduce) {

@@ -47,10 +47,10 @@ const albums = defineCollection({
       slug: z.string(),
       adcode: z.number(),
     }),
-    city: z.string().optional(),
     description: z.string(),
     cover: z.string(),
-    publishedAt: z.coerce.date(),
+    takenAt: z.coerce.date().optional(),
+    publishedAt: z.coerce.date().optional(),
     photos: z.array(
       z.object({
         src: z.string(),
