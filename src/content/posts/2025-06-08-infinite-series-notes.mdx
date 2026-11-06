@@ -1,0 +1,143 @@
+---
+title: "高数复习：级数敛散性与幂级数求和"
+description: "梳理部分和、比值与根值判别法、交错级数，以及幂级数的收敛区间和和函数。"
+pubDatetime: 2025-06-08T00:00:00+08:00
+modDatetime: 2026-11-06T00:00:00+08:00
+tags: ["数学", "高等数学", "学习笔记"]
+draft: false
+---
+
+复习级数时，先区分数项级数的敛散性与幂级数的和函数。前者判断能不能求和，后者还要确定在哪些 x 的范围内成立。
+
+## 收敛看部分和，不是看部分和是否趋于零
+
+设部分和为：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>S</mi><mi>N</mi></msub><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mi>a</mi><mi>n</mi></msub><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+若部分和趋于某个有限实数 S，就称级数收敛，并把 S 称为它的和：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>lim</mo><mrow><mi>N</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><msub><mi>S</mi><mi>N</mi></msub><mo>&#x0003D;</mo><mi>S</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+S 不必为零。原笔记“部分和极限为零则收敛”的记法太窄，应改成“部分和有有限极限”。
+
+另一方面，通项趋于零只是级数收敛的必要条件。调和级数的通项趋于零，但级数发散。
+
+## 正项级数的比值法与根值法
+
+对正项级数，若比值极限存在：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>&#x003C1;</mi><mo>&#x0003D;</mo><msub><mo>lim</mo><mrow><mi>n</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><mfrac><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msub></mrow><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow></mfrac><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+则 ρ 小于 1 时收敛，大于 1 时发散，等于 1 时不能据此判断。含阶乘的通项经常适合先试比值法，因为相邻项相除可以消去很多因子。
+
+根值法看的是：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>&#x003C1;</mi><mo>&#x0003D;</mo><msub><mo>lim</mo><mrow><mi>n</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><mroot><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow><mi>n</mi></mroot><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+在这个极限存在的前提下，判别结果同上。两种方法都不能在 ρ = 1 时直接下结论。例如调和级数发散，而平方倒数的级数收敛，但它们的比值极限都是 1。
+
+几个常用极限如下，其中 a 为固定正数：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>lim</mo><mrow><mi>n</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><mroot><mrow><mi>a</mi></mrow><mi>n</mi></mroot><mo>&#x0003D;</mo><mn>1</mn><mo>&#x0002C;</mo><mspace width="2em" /><msub><mo>lim</mo><mrow><mi>n</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><mroot><mrow><mi>n</mi></mrow><mi>n</mi></mroot><mo>&#x0003D;</mo><mn>1</mn><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>lim</mo><mrow><mi>n</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><mroot><mrow><msup><mi>n</mi><mn>2</mn></msup><mo>&#x02212;</mo><mn>3</mn><mi>n</mi></mrow><mi>n</mi></mroot><mo>&#x0003D;</mo><mn>1</mn><mo>&#x0002C;</mo><mspace width="2em" /><msub><mo>lim</mo><mrow><mi>n</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><mroot><mrow><mi>n</mi><mo>&#x00021;</mo></mrow><mi>n</mi></mroot><mo>&#x0003D;</mo><mo>&#x0002B;</mo><mo>&#x0221E;</mo><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+第三式只需从根式有意义的充分大 n 开始考虑。
+
+## 交错级数：莱布尼茨判别法
+
+对于交错级数：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msub><mi>b</mi><mi>n</mi></msub><mo>&#x0002C;</mo><mspace width="2em" /><msub><mi>b</mi><mi>n</mi></msub><mo>&#x02265;</mo><mn>0</mn><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+如果 b 的各项从某项起单调不增，并且趋于零，那么级数收敛。
+
+检查时可以先看极限，再判断单调性；若把通项延拓成可导函数，也可以借助导数。单调不要求严格递减。
+
+通过这个判别法，只能先得到收敛结论。要判断是不是绝对收敛，还要另外考察绝对值级数。
+
+## 幂级数：先求收敛区间
+
+对于以零为中心的幂级数：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><msub><mi>a</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+如果相关系数非零且比值极限存在，收敛半径可以用：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>R</mi><mo>&#x0003D;</mo><msub><mo>lim</mo><mrow><mi>n</mi><mo>&#x02192;</mo><mo>&#x0221E;</mo></mrow></msub><mrow><mo stretchy="true" fence="true" form="prefix">&#x0007C;</mo><mfrac><mrow><msub><mi>a</mi><mi>n</mi></msub></mrow><mrow><msub><mi>a</mi><mrow><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msub></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x0007C;</mo></mrow><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+比值法不能直接使用时，可以回到根值法等方法。得到半径之后，还要把有限端点分别代回原级数判断，不能只写一个开区间就结束。
+
+## 常见和函数
+
+下面四个表达式均先在绝对值小于 1 的范围内使用：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><msup><mi>x</mi><mi>n</mi></msup><mo>&#x0003D;</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>&#x02212;</mo><mi>x</mi></mrow></mfrac><mo>&#x0002C;</mo><mspace width="2em" /><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><msup><mi>x</mi><mi>n</mi></msup><mo>&#x0003D;</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mn>1</mn><mo>&#x02212;</mo><mi>x</mi></mrow></mfrac><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mi>n</mi></msup><msup><mi>x</mi><mi>n</mi></msup><mo>&#x0003D;</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>&#x0002B;</mo><mi>x</mi></mrow></mfrac><mo>&#x0002C;</mo><mspace width="2em" /><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup><mo>&#x0003D;</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>&#x02212;</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+遇到多一个 n 或少一个分母的级数，可以在收敛区间内部逐项求导、积分，再利用初值确定常数。
+
+例如求下面级数的和函数：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>S</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><msup><mi>x</mi><mi>n</mi></msup><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0003C;</mo><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+把几何级数乘 x，再求导，就得到：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>S</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mi>x</mi></mrow><mrow><mn>1</mn><mo>&#x02212;</mo><mi>x</mi></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mfrac><mn>1</mn><mrow><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x02212;</mo><mi>x</mi><msup><mo stretchy="false">&#x00029;</mo><mn>2</mn></msup></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 反过来求展开：先求导，再积分
+
+原笔记截图中还有一个例子：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mi>arctan</mi><mfrac><mrow><mn>1</mn><mo>&#x0002B;</mo><mi>x</mi></mrow><mrow><mn>1</mn><mo>&#x02212;</mo><mi>x</mi></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+在绝对值小于 1 的区间内，它的导数是：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msup><mi>f</mi><mi>&#x02032;</mi></msup><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>&#x0002B;</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mi>n</mi></msup><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+从 0 到 x 逐项积分，并用 f(0) = π/4 确定常数：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mfrac><mi>&#x003C0;</mi><mn>4</mn></mfrac><mo>&#x0002B;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mi>n</mi></msup></mrow><mrow><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></mfrac><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msup><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0003C;</mo><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+这里必须保留常数项。区间外还涉及反正切的分支，不能把这一步的等式直接推广到所有实数。
+
+## 参考
+
+- [OpenStax：Infinite Series](https://openstax.org/books/calculus-volume-2/pages/5-2-infinite-series)
+- [OpenStax：Ratio and Root Tests](https://openstax.org/books/calculus-volume-2/pages/5-6-ratio-and-root-tests)
+- [OpenStax：Alternating Series](https://openstax.org/books/calculus-volume-2/pages/5-5-alternating-series)
+- [OpenStax：Power Series and Functions](https://openstax.org/books/calculus-volume-2/pages/6-1-power-series-and-functions)

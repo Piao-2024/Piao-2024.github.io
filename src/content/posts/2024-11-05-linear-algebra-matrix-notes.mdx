@@ -1,0 +1,153 @@
+---
+title: "线代复习：行列式、伴随矩阵与逆矩阵"
+description: "整理行列式性质、矩阵乘法、伴随矩阵、可逆条件与初等变换。"
+pubDatetime: 2024-11-05T00:00:00+08:00
+modDatetime: 2026-11-06T00:00:00+08:00
+tags: ["数学", "线性代数", "学习笔记"]
+draft: false
+---
+
+整理线代复习时记下的几个重点：行列式、矩阵乘法，以及伴随矩阵和逆矩阵的关系。
+
+## 行列式与矩阵要分清
+
+矩阵是一组按行列排列的数；行列式则是方阵对应的一个数。常见的标量记号不能直接套在矩阵上。
+
+例如，单位矩阵 I 在矩阵乘法中起类似数字 1 的作用，但它本身不是数字 1。
+
+若 A 是 n 阶方阵，则：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo movablelimits="true">det</mo><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mi>T</mi></msup><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mo movablelimits="true">det</mo><mi>A</mi><mo>&#x0002C;</mo><mspace width="2em" /><mo movablelimits="true">det</mo><mo stretchy="false">&#x00028;</mo><mi>k</mi><mi>A</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><msup><mi>k</mi><mi>n</mi></msup><mo movablelimits="true">det</mo><mi>A</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo movablelimits="true">det</mo><mo stretchy="false">&#x00028;</mo><mi>A</mi><mi>B</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mo movablelimits="true">det</mo><mi>A</mi><mo movablelimits="true">det</mo><mi>B</mi><mo>&#x0002C;</mo><mspace width="2em" /><mo movablelimits="true">det</mo><mi>I</mi><mo>&#x0003D;</mo><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+给某一行提取公因子 k，行列式只提出一个 k；给整个 n 阶矩阵乘 k，每行都有这个因子，所以一共提出 n 个。
+
+一般没有“和的行列式等于行列式的和”这样的公式。
+
+## 计算行列式时常用的性质
+
+- 两行或两列交换，行列式变号。
+- 两行或两列相同、成比例，或者某一行能由其余行线性表示时，行列式为零。
+- 某一行加上另一行的倍数，行列式不变。
+- 某一行的元素都是两项之和时，可以按这一行拆成两个行列式；其余行保持不变。
+
+按第 i 行展开时：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo movablelimits="true">det</mo><mi>A</mi><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>j</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>C</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&#x0002C;</mo><mspace width="2em" /><msub><mi>C</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mrow><mi>i</mi><mo>&#x0002B;</mo><mi>j</mi></mrow></msup><msub><mi>M</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+这里的 M 是删去对应行、列后得到的余子式，C 是代数余子式。若把另一行的元素与这一行的代数余子式对应相乘后求和，结果为零。
+
+一些特殊结构也值得记住：对角或三角行列式等于对角元素的乘积；实数域上奇数阶反对称矩阵的行列式为零，偶数阶则不能仅凭反对称判断为零。
+
+范德蒙德行列式按“每行对应一个变量，各列次数递增”的排列，有：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo movablelimits="true">det</mo><mo>&#x00028;</mo><mtable><mtr><mtd><mn>1</mn></mtd><mtd><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd><mo>&#x022EF;</mo></mtd><mtd><msubsup><mi>x</mi><mn>1</mn><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msubsup></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><msub><mi>x</mi><mn>2</mn></msub></mtd><mtd><mo>&#x022EF;</mo></mtd><mtd><msubsup><mi>x</mi><mn>2</mn><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msubsup></mtd></mtr><mtr><mtd><mo>&#x022EE;</mo></mtd><mtd><mo>&#x022EE;</mo></mtd><mtd /><mtd><mo>&#x022EE;</mo></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><msub><mi>x</mi><mi>n</mi></msub></mtd><mtd><mo>&#x022EF;</mo></mtd><mtd><msubsup><mi>x</mi><mi>n</mi><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msubsup></mtd></mtr></mtable><mo>&#x00029;</mo><mo>&#x0003D;</mo><munder><mo>&#x0220F;</mo><mrow><mn>1</mn><mo>&#x02264;</mo><mi>i</mi><mo>&#x0003C;</mo><mi>j</mi><mo>&#x02264;</mo><mi>n</mi></mrow></munder><mo stretchy="false">&#x00028;</mo><msub><mi>x</mi><mi>j</mi></msub><mo>&#x02212;</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">&#x00029;</mo><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+排列中奇偶排列各占一半的结论适用于阶数至少为 2 的情况，不能遗漏这个条件。
+
+## 矩阵乘法：中间相等，取两头
+
+若 A 是 m 行 n 列，B 是 n 行 p 列，那么 AB 是 m 行 p 列。
+
+矩阵乘法满足结合律和分配律，但一般不满足交换律。两个非零矩阵相乘也可能得到零矩阵，所以不能随意约去因子。
+
+对于同阶方阵，只有确实满足 AB = BA，才能称它们可交换。两个同阶对角矩阵就是可交换的例子。
+
+转置也要注意顺序：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false">&#x00029;</mo><mi>T</mi></msup><mo>&#x0003D;</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+对称矩阵满足转置后不变；反对称矩阵满足转置后变号。
+
+## 伴随矩阵：按行求，按列放
+
+把所有代数余子式排成矩阵，再转置，就得到伴随矩阵。这里写作 adj A，避免与共轭转置记号混淆：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>adj</mo><mi>A</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><msub><mi>C</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msup><mo stretchy="false">&#x00029;</mo><mi>T</mi></msup><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+任意方阵都有伴随矩阵，不要求它可逆。核心关系是：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>A</mi><mo>adj</mo><mi>A</mi><mo>&#x0003D;</mo><mo>adj</mo><mi>A</mi><mspace width="0.167em" /><mi>A</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mo movablelimits="true">det</mo><mi>A</mi><mo stretchy="false">&#x00029;</mo><mi>I</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+对于阶数至少为 2 的方阵，还可记住：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo movablelimits="true">det</mo><mo stretchy="false">&#x00028;</mo><mo>adj</mo><mi>A</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mo movablelimits="true">det</mo><mi>A</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0002C;</mo><mspace width="2em" /><mo>adj</mo><mo stretchy="false">&#x00028;</mo><mi>k</mi><mi>A</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><msup><mi>k</mi><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>adj</mo><mi>A</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 可逆条件与求逆
+
+对 n 阶方阵，以下条件等价：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>A</mi><mtext>&#x000A0;可逆</mtext><mi>&#x027FA;</mi><mo movablelimits="true">det</mo><mi>A</mi><mo>&#x02260;</mo><mn>0</mn><mi>&#x027FA;</mi><mo>rank</mo><mi>A</mi><mo>&#x0003D;</mo><mi>n</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+可逆时，逆矩阵唯一，并且：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mfrac><mrow><mo>adj</mo><mi>A</mi></mrow><mrow><mo movablelimits="true">det</mo><mi>A</mi></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+求逆常用两种办法：伴随矩阵法和初等行变换法。后者是在增广矩阵上进行同样的行变换：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">[</mo><mi>A</mi><mo>&#x02223;</mo><mi>I</mi><mo stretchy="false">]</mo><mi>&#x027F6;</mi><mo stretchy="false">[</mo><mi>I</mi><mo>&#x02223;</mo><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo stretchy="false">]</mo><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+三类初等行变换分别是交换两行、某行乘非零常数、某行加上另一行的倍数。上面的增广矩阵求逆过程使用行变换。
+
+对于对角矩阵，若所有对角元素都非零，求逆就是将每个对角元素取倒数。
+
+## 逆矩阵的几个性质
+
+下面假设 A、B 是同阶可逆方阵，k 非零，m 为正整数：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msup><mo stretchy="false">&#x00029;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mi>A</mi><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mi>T</mi></msup><msup><mo stretchy="false">&#x00029;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msup><mo stretchy="false">&#x00029;</mo><mi>T</mi></msup><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><mi>k</mi><mi>A</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mfrac><mn>1</mn><mi>k</mi></mfrac><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x00028;</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><msup><mi>B</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mi>m</mi></msup><msup><mo stretchy="false">&#x00029;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msup><mo stretchy="false">&#x00029;</mo><mi>m</mi></msup><mo>&#x0002C;</mo><mspace width="2em" /><mo movablelimits="true">det</mo><mo stretchy="false">&#x00028;</mo><msup><mi>A</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mfrac><mn>1</mn><mrow><mo movablelimits="true">det</mo><mi>A</mi></mrow></mfrac><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><mo>adj</mo><mi>A</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mfrac><mrow><mi>A</mi></mrow><mrow><mo movablelimits="true">det</mo><mi>A</mi></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+特别注意乘积求逆时顺序颠倒。
+
+## 克莱默法则
+
+对于方程组 Ax = b，若系数矩阵的行列式非零，解唯一，且：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>&#x0003D;</mo><mfrac><mrow><mo movablelimits="true">det</mo><msub><mi>A</mi><mi>i</mi></msub></mrow><mrow><mo movablelimits="true">det</mo><mi>A</mi></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+这里的 A 的下标 i 版本，是把 A 的第 i 列替换为 b 得到的矩阵。分母非零是使用这个公式的前提。
+
+## 参考
+
+- [Interactive Linear Algebra：Matrix Inverses](https://textbooks.math.gatech.edu/ila/matrix-inverses.html)
+- [Interactive Linear Algebra：The Invertible Matrix Theorem](https://textbooks.math.gatech.edu/ila/invertible-matrix-thm.html)
+- [Interactive Linear Algebra：Cofactor Expansions](https://textbooks.math.gatech.edu/ila/determinants-cofactors.html)

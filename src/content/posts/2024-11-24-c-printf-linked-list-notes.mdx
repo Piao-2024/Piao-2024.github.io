@@ -1,0 +1,151 @@
+---
+title: "C 语言笔记：printf 转义与单链表尾插法"
+description: "记录 printf 中百分号的含义，以及带头结点单链表的创建、计数和释放。"
+pubDatetime: 2024-11-24T00:00:00+08:00
+modDatetime: 2026-11-06T00:00:00+08:00
+tags: ["技术", "C", "学习笔记"]
+draft: false
+---
+
+这份笔记记录两个容易忘的地方：`printf` 中的百分号转义，以及用尾插法建立单链表。
+
+## printf 中的 %% 会输出什么
+
+先看原来的练习：
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int x = 2, y = 3;
+    printf("x=%%d,y=%%d\n", x, y);
+    return 0;
+}
+```
+
+输出是：
+
+```text
+x=%d,y=%d
+```
+
+`%%` 表示输出一个普通的 `%`，后面的 `d` 就是普通字符。它不会继续被当成 `%d` 转换说明，也不会消耗 `x`、`y` 参数。这个例子多传了两个没有使用的参数，编译器可能给出警告。
+
+原笔记将答案记成了 `x=%%d,y=%%d`，这里更正。
+
+如果要打印变量值，应写成：
+
+```c
+printf("x=%d,y=%d\n", x, y);
+```
+
+这时才会输出 `x=2,y=3`。如果只想打印字面量，可以直接写 `printf("x=%%d,y=%%d\n");`。
+
+## 用尾插法建立单链表
+
+下面采用带头结点的单链表。头结点本身不保存有效数据，`tail` 始终指向最后一个结点；空链表时，`tail` 就指向头结点。
+
+插入新结点的关键两步是：
+
+```c
+tail->next = node;
+tail = node;
+```
+
+第一步接上新结点，第二步更新尾指针。这样插入的数据顺序与输入顺序一致。
+
+## 完整示例：统计某个数出现的次数
+
+输入依次为结点数量、各结点的整数值，以及待统计的整数。这里假设所有输入数值均在 `int` 的表示范围内。
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int value;
+    struct Node *next;
+};
+
+static void free_list(struct Node *head)
+{
+    struct Node *node = head->next;
+    while (node != NULL) {
+        struct Node *next = node->next;
+        free(node);
+        node = next;
+    }
+    head->next = NULL;
+}
+
+int main(void)
+{
+    struct Node head = {0, NULL};
+    struct Node *tail = &head;
+    int n;
+
+    if (scanf("%d", &n) != 1 || n < 0) {
+        fputs("Invalid node count\n", stderr);
+        return EXIT_FAILURE;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        int value;
+        if (scanf("%d", &value) != 1) {
+            free_list(&head);
+            fputs("Invalid node value\n", stderr);
+            return EXIT_FAILURE;
+        }
+
+        struct Node *node = malloc(sizeof *node);
+        if (node == NULL) {
+            free_list(&head);
+            fputs("Memory allocation failed\n", stderr);
+            return EXIT_FAILURE;
+        }
+        node->value = value;
+        node->next = NULL;
+        tail->next = node;
+        tail = node;
+    }
+
+    int target;
+    if (scanf("%d", &target) != 1) {
+        free_list(&head);
+        fputs("Invalid target\n", stderr);
+        return EXIT_FAILURE;
+    }
+
+    int count = 0;
+    for (struct Node *node = head.next; node != NULL; node = node->next) {
+        if (node->value == target) {
+            ++count;
+        }
+    }
+
+    printf("There are %d occurrence(s) of %d\n", count, target);
+    free_list(&head);
+    return EXIT_SUCCESS;
+}
+```
+
+例如输入：
+
+```text
+5
+2 3 2 4 2
+2
+```
+
+输出：
+
+```text
+There are 3 occurrence(s) of 2
+```
+
+遍历从 `head.next` 开始，跳过头结点。释放时要先保存下一个结点的指针，再释放当前结点，避免访问已经释放的内存。
+
+## 参考
+
+[C11 委员会草案 N1570](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf) 的 7.21.6.1、7.21.6.3 节说明格式化输出与 `printf`，7.22.3 节说明动态内存管理。

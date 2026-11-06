@@ -1,0 +1,133 @@
+---
+title: "高数复习：二重与三重积分怎么选积分次序"
+description: "从画区域、定界限出发，整理直角坐标、极坐标、投影法、截面法及柱面与球坐标。"
+pubDatetime: 2025-06-13T00:00:00+08:00
+modDatetime: 2026-11-06T00:00:00+08:00
+tags: ["数学", "高等数学", "学习笔记"]
+draft: false
+---
+
+做重积分时，先画区域，再选积分次序。积分式能不能顺利算出来，很多时候在写上下限时就决定了。
+
+## 二重积分：先画区域
+
+设被积函数在有界区域上连续。若区域可以写成：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>D</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x0007B;</mo><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00029;</mo><mi>:</mi><mi>a</mi><mo>&#x02264;</mo><mi>x</mi><mo>&#x02264;</mo><mi>b</mi><mo>&#x0002C;</mo><mtext>&#x000A0;</mtext><msub><mi>&#x003C6;</mi><mn>1</mn></msub><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x02264;</mo><mi>y</mi><mo>&#x02264;</mo><msub><mi>&#x003C6;</mi><mn>2</mn></msub><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x0007D;</mo><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+那么先固定 x，沿 y 方向穿过区域，再对 x 积分：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222C;</mo><mi>D</mi></msub><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mi>a</mi><mi>b</mi></msubsup><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><msubsup><mo>&#x0222B;</mo><mrow><msub><mi>&#x003C6;</mi><mn>1</mn></msub><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo></mrow><mrow><msub><mi>&#x003C6;</mi><mn>2</mn></msub><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo></mrow></msubsup><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mi>d</mi><mi>x</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+也可以固定 y，把 x 写成上下限。重点是看每一条截线与区域的交集能否用一个区间表示；不能时就分区。
+
+换序时，区域不变，但边界表达式要重新写，不能只交换微分符号。
+
+例如，区域由直线 x = 2、y = 1、y = x 围成，可写为：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mn>1</mn><mo>&#x02264;</mo><mi>x</mi><mo>&#x02264;</mo><mn>2</mn><mo>&#x0002C;</mo><mspace width="2em" /><mn>1</mn><mo>&#x02264;</mo><mi>y</mi><mo>&#x02264;</mo><mi>x</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+因此：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222C;</mo><mi>D</mi></msub><mi>x</mi><mi>y</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mn>1</mn><mn>2</mn></msubsup><msubsup><mo>&#x0222B;</mo><mn>1</mn><mi>x</mi></msubsup><mi>x</mi><mi>y</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0003D;</mo><mfrac><mn>9</mn><mn>8</mn></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 遇到不好积的函数，可以换序
+
+区域由 x = y² 与 x = y 围成时，有两种写法：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mn>0</mn><mo>&#x02264;</mo><mi>x</mi><mo>&#x02264;</mo><mn>1</mn><mo>&#x0002C;</mo><mspace width="1em" /><mi>x</mi><mo>&#x02264;</mo><mi>y</mi><mo>&#x02264;</mo><msqrt><mi>x</mi></msqrt><mi>;</mi><mspace width="2em" /><mn>0</mn><mo>&#x02264;</mo><mi>y</mi><mo>&#x02264;</mo><mn>1</mn><mo>&#x0002C;</mo><mspace width="1em" /><msup><mi>y</mi><mn>2</mn></msup><mo>&#x02264;</mo><mi>x</mi><mo>&#x02264;</mo><mi>y</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+如果被积函数是 sin(y)/y，先对 y 积分不方便；换成先对 x 积分，就能把 x 方向的宽度提出。将零点处按极限补为 1 后，可得：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222C;</mo><mi>D</mi></msub><mfrac><mrow><mi>sin</mi><mi>y</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mn>0</mn><mn>1</mn></msubsup><mfrac><mrow><mi>sin</mi><mi>y</mi></mrow><mrow><mi>y</mi></mrow></mfrac><mo stretchy="false">&#x00028;</mo><mi>y</mi><mo>&#x02212;</mo><msup><mi>y</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><mn>1</mn><mo>&#x02212;</mo><mi>sin</mi><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 极坐标：别漏掉 r
+
+区域含圆、圆环或扇形时，经常考虑极坐标：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>x</mi><mo>&#x0003D;</mo><mi>r</mi><mi>cos</mi><mi>&#x003B8;</mi><mo>&#x0002C;</mo><mspace width="2em" /><mi>y</mi><mo>&#x0003D;</mo><mi>r</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x0002C;</mo><mspace width="2em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003B8;</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+先确定角度范围，再沿射线确定半径的进入、离开位置。换元时，被积函数和面积元都要换。
+
+## 分段函数：按分界线拆区域
+
+如果被积函数含绝对值，就先找绝对值里面为零的曲线。
+
+例如在矩形 `0 ≤ x ≤ 2，-2 ≤ y ≤ 2` 上积分 `|x+y-2|`，分界线是 y = 2 - x。在分界线两侧分别确定符号，再分开积分。
+
+## 三重积分：投影法与截面法
+
+**投影法，先一后二。** 把立体投影到平面，固定平面上的一点，先沿高度方向积分：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222D;</mo><mi>&#x003A9;</mi></msub><mi>f</mi><mspace width="0.167em" /><mi>d</mi><mi>V</mi><mo>&#x0003D;</mo><msub><mo>&#x0222C;</mo><mi>D</mi></msub><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><msubsup><mo>&#x0222B;</mo><mrow><msub><mi>z</mi><mn>1</mn></msub><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00029;</mo></mrow><mrow><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00029;</mo></mrow></msubsup><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo>&#x0002C;</mo><mi>z</mi><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+**截面法，先二后一。** 固定高度 z，先算该高度处截面上的二重积分，再对高度积分：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222D;</mo><mi>&#x003A9;</mi></msub><mi>f</mi><mspace width="0.167em" /><mi>d</mi><mi>V</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mi>c</mi><mi>d</mi></msubsup><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><msub><mo>&#x0222C;</mo><mrow><msub><mi>D</mi><mi>z</mi></msub></mrow></msub><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo>&#x0002C;</mo><mi>z</mi><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mi>d</mi><mi>z</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+例如在单位球内积分 z²，固定 z 后的截面是半径为平方根 `sqrt(1-z²)` 的圆盘：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222D;</mo><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>y</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>z</mi><mn>2</mn></msup><mo>&#x02264;</mo><mn>1</mn></mrow></msub><msup><mi>z</mi><mn>2</mn></msup><mspace width="0.167em" /><mi>d</mi><mi>V</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow><mn>1</mn></msubsup><msup><mi>z</mi><mn>2</mn></msup><mi>&#x003C0;</mi><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x02212;</mo><msup><mi>z</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>4</mn><mi>&#x003C0;</mi></mrow><mrow><mn>15</mn></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 柱面坐标
+
+当立体的平面投影是圆形区域时，可以把平面上的部分改成极坐标，高度保持不变：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>x</mi><mo>&#x0003D;</mo><mi>r</mi><mi>cos</mi><mi>&#x003B8;</mi><mo>&#x0002C;</mo><mspace width="1em" /><mi>y</mi><mo>&#x0003D;</mo><mi>r</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x0002C;</mo><mspace width="1em" /><mi>z</mi><mo>&#x0003D;</mo><mi>z</mi><mo>&#x0002C;</mo><mspace width="1em" /><mi>d</mi><mi>V</mi><mo>&#x0003D;</mo><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003B8;</mi><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+实际书写时根据上下限选择次序，不必机械照抄微分的排列。
+
+例如圆柱 `x²+y² ≤ 1，-1 ≤ z ≤ 1` 内：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222D;</mo><mi>&#x003A9;</mi></msub><mo stretchy="false">&#x00028;</mo><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>y</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>z</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>V</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x003C0;</mi></mrow></msubsup><msubsup><mo>&#x0222B;</mo><mn>0</mn><mn>1</mn></msubsup><msubsup><mo>&#x0222B;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow><mn>1</mn></msubsup><mo stretchy="false">&#x00028;</mo><msup><mi>r</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>z</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mspace width="0.167em" /><mi>d</mi><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003B8;</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>5</mn><mi>&#x003C0;</mi></mrow><mrow><mn>3</mn></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 球坐标
+
+约定 θ 是平面方位角，φ 是与正 z 轴的夹角：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>x</mi><mo>&#x0003D;</mo><mi>r</mi><mi>sin</mi><mi>&#x003C6;</mi><mi>cos</mi><mi>&#x003B8;</mi><mo>&#x0002C;</mo><mspace width="1em" /><mi>y</mi><mo>&#x0003D;</mo><mi>r</mi><mi>sin</mi><mi>&#x003C6;</mi><mi>sin</mi><mi>&#x003B8;</mi><mo>&#x0002C;</mo><mspace width="1em" /><mi>z</mi><mo>&#x0003D;</mo><mi>r</mi><mi>cos</mi><mi>&#x003C6;</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>d</mi><mi>V</mi><mo>&#x0003D;</mo><msup><mi>r</mi><mn>2</mn></msup><mi>sin</mi><mi>&#x003C6;</mi><mspace width="0.167em" /><mi>d</mi><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003C6;</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003B8;</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+不同教材的角度字母约定可能不同，要连着坐标表达式一起记。
+
+例如单位球第一卦限内，半径在 0 到 1 之间，两个角都在 0 到 π/2 之间：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222D;</mo><mi>&#x003A9;</mi></msub><mi>x</mi><mi>y</mi><mi>z</mi><mspace width="0.167em" /><mi>d</mi><mi>V</mi><mo>&#x0003D;</mo><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><msubsup><mo>&#x0222B;</mo><mn>0</mn><mn>1</mn></msubsup><msup><mi>r</mi><mn>5</mn></msup><mi>d</mi><mi>r</mi><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><msubsup><mo>&#x0222B;</mo><mn>0</mn><mrow><mi>&#x003C0;</mi><mo>&#x0002F;</mo><mn>2</mn></mrow></msubsup><msup><mi>sin</mi><mn>3</mn></msup><mi>&#x003C6;</mi><mi>cos</mi><mi>&#x003C6;</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003C6;</mi><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><msubsup><mo>&#x0222B;</mo><mn>0</mn><mrow><mi>&#x003C0;</mi><mo>&#x0002F;</mo><mn>2</mn></mrow></msubsup><mi>sin</mi><mi>&#x003B8;</mi><mi>cos</mi><mi>&#x003B8;</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003B8;</mi><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mfrac><mn>1</mn><mrow><mn>48</mn></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 参考
+
+- [OpenStax：Double Integrals over General Regions](https://openstax.org/books/calculus-volume-3/pages/5-2-double-integrals-over-general-regions)
+- [OpenStax：Double Integrals in Polar Coordinates](https://openstax.org/books/calculus-volume-3/pages/5-3-double-integrals-in-polar-coordinates)
+- [OpenStax：Triple Integrals](https://openstax.org/books/calculus-volume-3/pages/5-4-triple-integrals)
+- [OpenStax：Triple Integrals in Cylindrical and Spherical Coordinates](https://openstax.org/books/calculus-volume-3/pages/5-5-triple-integrals-in-cylindrical-and-spherical-coordinates)

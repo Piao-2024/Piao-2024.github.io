@@ -1,0 +1,118 @@
+---
+title: "高数复习：两类曲线积分与曲面积分"
+description: "整理弧长与坐标曲线积分、格林公式、曲面积分的投影法和定向。"
+pubDatetime: 2025-06-10T00:00:00+08:00
+modDatetime: 2026-11-06T00:00:00+08:00
+tags: ["数学", "高等数学", "学习笔记"]
+draft: false
+---
+
+曲线积分和曲面积分的计算，先分清是哪一类，再看路径、曲面和方向。两类积分的微元含义不同，不能只记公式的外形。
+
+## 第一类曲线积分：对弧长积分
+
+第一类曲线积分使用弧长元 ds，不随曲线方向反转而改变。
+
+若平面曲线写成 y = y(x)，且 x 在 a 到 b 之间、a 小于 b，则：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>d</mi><mi>s</mi><mo>&#x0003D;</mo><msqrt><mrow><mn>1</mn><mo>&#x0002B;</mo><mo stretchy="false">[</mo><msup><mi>y</mi><mi>&#x02032;</mi></msup><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><msup><mo stretchy="false">]</mo><mn>2</mn></msup></mrow></msqrt><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+若曲线参数化为 x = x(t)、y = y(t)，则在参数递增的区间上：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222B;</mo><mi>L</mi></msub><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>s</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mi>&#x003B1;</mi><mi>&#x003B2;</mi></msubsup><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><msqrt><mrow><mo stretchy="false">[</mo><msup><mi>x</mi><mi>&#x02032;</mi></msup><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><msup><mo stretchy="false">]</mo><mn>2</mn></msup><mo>&#x0002B;</mo><mo stretchy="false">[</mo><msup><mi>y</mi><mi>&#x02032;</mi></msup><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><msup><mo stretchy="false">]</mo><mn>2</mn></msup></mrow></msqrt><mspace width="0.167em" /><mi>d</mi><mi>t</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+例如单位圆的下半圆，曲线上 x²+y² 恒为 1，所以：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222B;</mo><mi>L</mi></msub><mo stretchy="false">&#x00028;</mo><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>y</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>s</mi><mo>&#x0003D;</mo><msub><mo>&#x0222B;</mo><mi>L</mi></msub><mn>1</mn><mspace width="0.167em" /><mi>d</mi><mi>s</mi><mo>&#x0003D;</mo><mi>&#x003C0;</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+能先利用曲线方程简化被积函数时，通常比直接代入更省事。
+
+## 第二类曲线积分：对坐标积分
+
+第二类曲线积分与方向有关，反向后变号。参数化时，参数起止位置必须对应曲线的起点和终点：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222B;</mo><mi>L</mi></msub><mi>P</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0002B;</mo><mi>Q</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mi>&#x003B1;</mi><mi>&#x003B2;</mi></msubsup><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mi>P</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><msup><mi>x</mi><mi>&#x02032;</mi></msup><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002B;</mo><mi>Q</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><msup><mi>y</mi><mi>&#x02032;</mi></msup><mo stretchy="false">&#x00028;</mo><mi>t</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mi>d</mi><mi>t</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+如果已知 y = y(x)，且 x 沿曲线从 a 走到 b，则：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222B;</mo><mi>L</mi></msub><mi>P</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0002B;</mo><mi>Q</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msubsup><mo>&#x0222B;</mo><mi>a</mi><mi>b</mi></msubsup><mrow><mo stretchy="true" fence="true" form="prefix">[</mo><mi>P</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><mo>&#x0002B;</mo><mi>Q</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><msup><mi>y</mi><mi>&#x02032;</mi></msup><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="true" fence="true" form="postfix">]</mo></mrow><mi>d</mi><mi>x</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+这里的 a、b 由方向决定，不应为了“从小到大”而擅自交换。
+
+## 格林公式
+
+设闭曲线 L 是分段光滑的简单闭曲线，围成区域 D；函数 P、Q 在包含 D 及其边界的开区域内有连续的一阶偏导数。沿正向，也就是通常的逆时针方向，有：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222E;</mo><mi>L</mi></msub><mi>P</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0002B;</mo><mi>Q</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msub><mo>&#x0222C;</mo><mi>D</mi></msub><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mfrac><mrow><mo>&#x02202;</mo><mi>Q</mi></mrow><mrow><mo>&#x02202;</mo><mi>x</mi></mrow></mfrac><mo>&#x02212;</mo><mfrac><mrow><mo>&#x02202;</mo><mi>P</mi></mrow><mrow><mo>&#x02202;</mo><mi>y</mi></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+若是顺时针方向，需要变号。原路径不封闭时，可以添加辅助线，但最后必须减去所添加路径的积分。
+
+比如圆周 x²+y² = a² 按顺时针方向取向，a 为正数：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222E;</mo><mi>L</mi></msub><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mo>&#x02212;</mo><msup><mi>x</mi><mn>2</mn></msup><mi>y</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0002B;</mo><mi>x</mi><msup><mi>y</mi><mn>2</mn></msup><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mo>&#x02212;</mo><msub><mo>&#x0222C;</mo><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>y</mi><mn>2</mn></msup><mo>&#x02264;</mo><msup><mi>a</mi><mn>2</mn></msup></mrow></msub><mo stretchy="false">&#x00028;</mo><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>y</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><mo>&#x02212;</mo><mfrac><mrow><mi>&#x003C0;</mi><msup><mi>a</mi><mn>4</mn></msup></mrow><mrow><mn>2</mn></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 第一类曲面积分：对面积积分
+
+这一类积分使用面积元 dS，不需要指定曲面朝向。
+
+若曲面能够表示为 z = z(x,y)，并投影到平面区域 D，则：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>d</mi><mi>S</mi><mo>&#x0003D;</mo><msqrt><mrow><mn>1</mn><mo>&#x0002B;</mo><msubsup><mi>z</mi><mi>x</mi><mn>2</mn></msubsup><mo>&#x0002B;</mo><msubsup><mi>z</mi><mi>y</mi><mn>2</mn></msubsup></mrow></msqrt><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222C;</mo><mi>&#x003A3;</mi></msub><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo>&#x0002C;</mo><mi>z</mi><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>S</mi><mo>&#x0003D;</mo><msub><mo>&#x0222C;</mo><mi>D</mi></msub><mi>f</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo>&#x0002C;</mo><mi>z</mi><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0002C;</mo><mi>y</mi><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><msqrt><mrow><mn>1</mn><mo>&#x0002B;</mo><msubsup><mi>z</mi><mi>x</mi><mn>2</mn></msubsup><mo>&#x0002B;</mo><msubsup><mi>z</mi><mi>y</mi><mn>2</mn></msubsup></mrow></msqrt><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+可以记成“一投、二代、三算”：先选投影面，再代曲面方程和面积元，最后算二重积分。若一个曲面不能整体表示成这种形式，就分块处理。
+
+例如圆锥 z = sqrt(x²+y²) 与平面 z = 1 围成的封闭曲面，分成侧面和顶面。在侧面，面积元是平面面积元的 √2 倍；在顶面则相等。因此：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222C;</mo><mi>&#x003A3;</mi></msub><mo stretchy="false">&#x00028;</mo><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>y</mi><mn>2</mn></msup><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>S</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><msqrt><mn>2</mn></msqrt><mo>&#x0002B;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><msubsup><mo>&#x0222B;</mo><mn>0</mn><mrow><mn>2</mn><mi>&#x003C0;</mi></mrow></msubsup><msubsup><mo>&#x0222B;</mo><mn>0</mn><mn>1</mn></msubsup><msup><mi>r</mi><mn>3</mn></msup><mspace width="0.167em" /><mi>d</mi><mi>r</mi><mspace width="0.167em" /><mi>d</mi><mi>&#x003B8;</mi><mo>&#x0003D;</mo><mfrac><mrow><mo stretchy="false">&#x00028;</mo><msqrt><mn>2</mn></msqrt><mo>&#x0002B;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+锥顶是单个奇点，可分片或取极限处理，不影响这里的积分值。
+
+## 第二类曲面积分：先定方向
+
+第二类曲面积分是通量积分，需要指定曲面的法向方向：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222C;</mo><mi>&#x003A3;</mi></msub><mi>P</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mo>&#x0002B;</mo><mi>Q</mi><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0002B;</mo><mi>R</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msub><mo>&#x0222C;</mo><mi>&#x003A3;</mi></msub><mo stretchy="false">&#x00028;</mo><mi>P</mi><mo>&#x0002C;</mo><mi>Q</mi><mo>&#x0002C;</mo><mi>R</mi><mo stretchy="false">&#x00029;</mo><mo>&#x000B7;</mo><mi mathvariant="bold-italic">n</mi><mspace width="0.167em" /><mi>d</mi><mi>S</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+其中 n 是所选方向的单位法向量。若 z = z(x,y) 取上侧，则：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi mathvariant="bold-italic">n</mi><mspace width="0.167em" /><mi>d</mi><mi>S</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><msub><mi>z</mi><mi>x</mi></msub><mo>&#x0002C;</mo><mo>&#x02212;</mo><msub><mi>z</mi><mi>y</mi></msub><mo>&#x0002C;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>&#x0222C;</mo><mi>&#x003A3;</mi></msub><mi>P</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mo>&#x0002B;</mo><mi>Q</mi><mspace width="0.167em" /><mi>d</mi><mi>z</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0002B;</mo><mi>R</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0003D;</mo><msub><mo>&#x0222C;</mo><mi>D</mi></msub><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mi>P</mi><msub><mi>z</mi><mi>x</mi></msub><mo>&#x02212;</mo><mi>Q</mi><msub><mi>z</mi><mi>y</mi></msub><mo>&#x0002B;</mo><mi>R</mi><mo stretchy="false">&#x00029;</mo><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>y</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+右侧的 P、Q、R 都要先代入曲面方程。若取下侧，整体变号。
+
+对仅含 R dx dy 的积分，投影到 xoy 平面时，上侧取正、下侧取负。不要在这种投影公式里再额外乘第一类曲面积分的面积放大因子。
+
+## 参考
+
+- [OpenStax：Line Integrals](https://openstax.org/books/calculus-volume-3/pages/6-2-line-integrals)
+- [OpenStax：Green’s Theorem](https://openstax.org/books/calculus-volume-3/pages/6-4-greens-theorem)
+- [OpenStax：Surface Integrals](https://openstax.org/books/calculus-volume-3/pages/6-6-surface-integrals)

@@ -1,0 +1,150 @@
+---
+title: "高数复习：高阶导数、泰勒展开与常用积分"
+description: "整理三角函数与对数函数的高阶导数、莱布尼茨公式、常见展开和积分换元。"
+pubDatetime: 2024-11-16T00:00:00+08:00
+modDatetime: 2026-11-06T00:00:00+08:00
+tags: ["数学", "高等数学", "学习笔记"]
+draft: false
+---
+
+把高数上笔记里分散的公式整理一下，主要用来复习高阶导数、常见展开和积分换元。
+
+## 高阶导数
+
+三角函数的高阶导数可以用相位变化来记：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><mi>sin</mi><mi>x</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo stretchy="false">&#x00029;</mo></mrow></msup><mo>&#x0003D;</mo><mi>sin</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mi>x</mi><mo>&#x0002B;</mo><mfrac><mrow><mi>n</mi><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x00028;</mo><mi>cos</mi><mi>x</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo stretchy="false">&#x00029;</mo></mrow></msup><mo>&#x0003D;</mo><mi>cos</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mi>x</mi><mo>&#x0002B;</mo><mfrac><mrow><mi>n</mi><mi>&#x003C0;</mi></mrow><mrow><mn>2</mn></mrow></mfrac><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+对于对数函数，正整数阶导数为：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><mi>ln</mi><mi>x</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo stretchy="false">&#x00029;</mo></mrow></msup><mo>&#x0003D;</mo><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo>&#x02212;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo>&#x00021;</mo></mrow><mrow><msup><mi>x</mi><mi>n</mi></msup></mrow></mfrac><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0003E;</mo><mn>0</mn><mo stretchy="false">&#x00029;</mo><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">[</mo><mi>ln</mi><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x0002B;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><msup><mo stretchy="false">]</mo><mrow><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo stretchy="false">&#x00029;</mo></mrow></msup><mo>&#x0003D;</mo><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo>&#x02212;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo>&#x00021;</mo></mrow><mrow><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x0002B;</mo><mi>x</mi><msup><mo stretchy="false">&#x00029;</mo><mi>n</mi></msup></mrow></mfrac><mspace width="1em" /><mo stretchy="false">&#x00028;</mo><mi>x</mi><mo>&#x0003E;</mo><mo>&#x02212;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 莱布尼茨公式
+
+乘积的高阶导数与二项式展开的结构相似：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><mi>u</mi><mi>v</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo stretchy="false">&#x00029;</mo></mrow></msup><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>k</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mi>n</mi></mrow></munderover><mo minsize="2.047em" maxsize="2.047em">&#x00028;</mo><mfrac linethickness="0"><mrow><mi>n</mi></mrow><mrow><mi>k</mi></mrow></mfrac><mo minsize="2.047em" maxsize="2.047em">&#x00029;</mo><msup><mi>u</mi><mrow><mo stretchy="false">&#x00028;</mo><mi>k</mi><mo stretchy="false">&#x00029;</mo></mrow></msup><msup><mi>v</mi><mrow><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo>&#x02212;</mo><mi>k</mi><mo stretchy="false">&#x00029;</mo></mrow></msup><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+计算时把导数分配给两个因子，再乘对应的组合数。这里约定零阶导数就是函数本身。
+
+## 常见麦克劳林展开
+
+在原点附近经常用到以下展开。前三个对所有实数成立：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msup><mi>e</mi><mi>x</mi></msup><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mfrac><mrow><msup><mi>x</mi><mi>n</mi></msup></mrow><mrow><mi>n</mi><mo>&#x00021;</mo></mrow></mfrac><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>sin</mi><mi>x</mi><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mi>n</mi></msup><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msup></mrow><mrow><mo stretchy="false">&#x00028;</mo><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo>&#x00021;</mo></mrow></mfrac><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>cos</mi><mi>x</mi><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mi>n</mi></msup><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi></mrow></msup></mrow><mrow><mo stretchy="false">&#x00028;</mo><mn>2</mn><mi>n</mi><mo stretchy="false">&#x00029;</mo><mo>&#x00021;</mo></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+下列两个先记住开区间内的表达式：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>ln</mi><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x0002B;</mo><mi>x</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msup><mi>x</mi><mi>n</mi></msup></mrow><mrow><mi>n</mi></mrow></mfrac><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0003C;</mo><mn>1</mn><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>&#x02212;</mo><mi>x</mi></mrow></mfrac><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><msup><mi>x</mi><mi>n</mi></msup><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0003C;</mo><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+广义二项式展开为：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x0002B;</mo><mi>x</mi><msup><mo stretchy="false">&#x00029;</mo><mi>&#x003B1;</mi></msup><mo>&#x0003D;</mo><mn>1</mn><mo>&#x0002B;</mo><mi>&#x003B1;</mi><mi>x</mi><mo>&#x0002B;</mo><mfrac><mrow><mi>&#x003B1;</mi><mo stretchy="false">&#x00028;</mo><mi>&#x003B1;</mi><mo>&#x02212;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo></mrow><mrow><mn>2</mn><mo>&#x00021;</mo></mrow></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><mo>&#x022EF;</mo><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0003C;</mo><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+当指数是非负整数时，上式退化为有限的二项式展开。
+
+反正切与反正弦的展开也很常见：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>arctan</mi><mi>x</mi><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mo>&#x02212;</mo><mn>1</mn><msup><mo stretchy="false">&#x00029;</mo><mi>n</mi></msup><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msup></mrow><mrow><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></mfrac><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x02264;</mo><mn>1</mn><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>arcsin</mi><mi>x</mi><mo>&#x0003D;</mo><munderover><mo>&#x02211;</mo><mrow><mi>n</mi><mo>&#x0003D;</mo><mn>0</mn></mrow><mrow><mo>&#x0221E;</mo></mrow></munderover><mfrac><mrow><mo stretchy="false">&#x00028;</mo><mn>2</mn><mi>n</mi><mo stretchy="false">&#x00029;</mo><mo>&#x00021;</mo></mrow><mrow><msup><mn>4</mn><mi>n</mi></msup><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo>&#x00021;</mo><msup><mo stretchy="false">&#x00029;</mo><mn>2</mn></msup><mo stretchy="false">&#x00028;</mo><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo></mrow></mfrac><msup><mi>x</mi><mrow><mn>2</mn><mi>n</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msup><mo>&#x0002C;</mo><mspace width="2em" /><mo stretchy="false">&#x0007C;</mo><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x02264;</mo><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+使用无穷展开时要同时记住适用范围；函数有各阶导数，也不自动意味着它在某个区间等于自己的泰勒级数。
+
+## 三角换元
+
+遇到根式时，可以根据平方和或平方差选择换元。下面设常数 a 为正数：
+
+| 根式 | 常用换元 |
+|---|---|
+| 平方差的平方根 `sqrt(a²-x²)` | `x = a sin t` |
+| 平方和的平方根 `sqrt(a²+x²)` | `x = a tan t` |
+| `sqrt(x²-a²)` | 按 x 的符号选择 `x = a sec t` 或 `x = -a sec t` |
+
+换元后同时替换微分；三角函数的取值范围要与根式的符号对应，不能直接丢掉绝对值。
+
+## 常用积分
+
+下列公式在被积函数有定义的相应区间内使用：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>&#x0222B;</mo><mi>tan</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0003D;</mo><mo>&#x02212;</mo><mi>ln</mi><mo stretchy="false">&#x0007C;</mo><mi>cos</mi><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002C;</mo><mspace width="2em" /><mo>&#x0222B;</mo><mi>cot</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0003D;</mo><mi>ln</mi><mo stretchy="false">&#x0007C;</mo><mi>sin</mi><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>&#x0222B;</mo><mi>sec</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0003D;</mo><mi>ln</mi><mo stretchy="false">&#x0007C;</mo><mi>sec</mi><mi>x</mi><mo>&#x0002B;</mo><mi>tan</mi><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>&#x0222B;</mo><mi>csc</mi><mi>x</mi><mspace width="0.167em" /><mi>d</mi><mi>x</mi><mo>&#x0003D;</mo><mi>ln</mi><mo stretchy="false">&#x0007C;</mo><mi>csc</mi><mi>x</mi><mo>&#x02212;</mo><mi>cot</mi><mi>x</mi><mo stretchy="false">&#x0007C;</mo><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+设 a 为正数，还可以记住：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>&#x0222B;</mo><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>&#x0003D;</mo><mfrac><mn>1</mn><mi>a</mi></mfrac><mi>arctan</mi><mfrac><mi>x</mi><mi>a</mi></mfrac><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>&#x0222B;</mo><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>&#x02212;</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></msqrt></mrow></mfrac><mo>&#x0003D;</mo><mi>arcsin</mi><mfrac><mi>x</mi><mi>a</mi></mfrac><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>&#x0222B;</mo><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>a</mi><mn>2</mn></msup></mrow></msqrt></mrow></mfrac><mo>&#x0003D;</mo><mi>ln</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x0007C;</mo><mi>x</mi><mo>&#x0002B;</mo><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>&#x0002B;</mo><msup><mi>a</mi><mn>2</mn></msup></mrow></msqrt><mo stretchy="true" fence="true" form="postfix">&#x0007C;</mo></mrow><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo>&#x0222B;</mo><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>&#x02212;</mo><msup><mi>a</mi><mn>2</mn></msup></mrow></msqrt></mrow></mfrac><mo>&#x0003D;</mo><mi>ln</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x0007C;</mo><mi>x</mi><mo>&#x0002B;</mo><msqrt><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>&#x02212;</mo><msup><mi>a</mi><mn>2</mn></msup></mrow></msqrt><mo stretchy="true" fence="true" form="postfix">&#x0007C;</mo></mrow><mo>&#x0002B;</mo><mi>C</mi><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+## 补记：反常积分的 p 型判别
+
+原线代笔记中混入了一张反常积分截图，这里一并归到高数复习。无穷远处与零点附近的判别条件不同：
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msubsup><mo>&#x0222B;</mo><mn>1</mn><mrow><mo>&#x0221E;</mo></mrow></msubsup><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><msup><mi>x</mi><mi>p</mi></msup></mrow></mfrac><mtext>&#x000A0;收敛</mtext><mi>&#x027FA;</mi><mi>p</mi><mo>&#x0003E;</mo><mn>1</mn><mo>&#x0002C;</mo></mrow></math>
+</div>
+
+<div className="my-6 overflow-x-auto py-2">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msubsup><mo>&#x0222B;</mo><mn>0</mn><mn>1</mn></msubsup><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><msup><mi>x</mi><mi>p</mi></msup></mrow></mfrac><mtext>&#x000A0;收敛</mtext><mi>&#x027FA;</mi><mi>p</mi><mo>&#x0003C;</mo><mn>1</mn><mo>&#x0002E;</mo></mrow></math>
+</div>
+
+判断前先找问题出在无穷远处还是有限端点，再比较被积函数的阶。
+
+## 参考
+
+- [OpenStax：Taylor and Maclaurin Series](https://openstax.org/books/calculus-volume-2/pages/6-3-taylor-and-maclaurin-series)
+- [OpenStax：Trigonometric Substitution](https://openstax.org/books/calculus-volume-2/pages/3-3-trigonometric-substitution)
+- [OpenStax：Improper Integrals](https://openstax.org/books/calculus-volume-2/pages/3-7-improper-integrals)
