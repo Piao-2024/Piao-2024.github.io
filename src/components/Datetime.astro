@@ -33,7 +33,8 @@ const datetime = dayjs(isModified ? modDatetime : pubDatetime).tz(
   postTimezone ?? config.site.timezone
 );
 
-const date = datetime.format("D MMM, YYYY");
+const isChinese = (Astro.currentLocale ?? config.site.lang).startsWith("zh");
+const date = datetime.format(isChinese ? "YYYY 年 M 月 D 日" : "D MMM, YYYY");
 ---
 
 <div
@@ -48,7 +49,7 @@ const date = datetime.format("D MMM, YYYY");
   {
     isModified && (
       <span class:list={["text-sm", { "sm:text-base": size === "lg" }]}>
-        {t.post.updatedAt}:
+        {t.post.updatedAt}
       </span>
     )
   }

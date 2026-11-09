@@ -6,12 +6,35 @@ import IconRss from "@/assets/icons/IconRssSocial.svg";
 import Layout from "@/layouts/Layout.astro";
 import Socials from "@/components/Socials.astro";
 import LeetCodeCard from "@/components/LeetCodeCard.astro";
+import { getCollection } from "astro:content";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import { getAssetPath } from "@/utils/withBase";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { getPostUrl } from "@/utils/getPostPaths";
 import config from "@/config";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const locale = Astro.currentLocale ?? config.site.lang;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 const avatarPath = getAssetPath("avatar.png");
+
+const recentPosts = getSortedPosts(await getCollection("posts"))
+  .slice(0, config.posts.perIndex)
+  .map(({ id, filePath, data }) => {
+    const date = dayjs(data.modDatetime ?? data.pubDatetime).tz(
+      data.timezone ?? config.site.timezone
+    );
+    return {
+      href: getPostUrl(id, filePath, locale),
+      title: data.title,
+      iso: date.toISOString(),
+      label: date.format("YYYY.MM.DD"),
+    };
+  });
 ---
 
 <Layout
@@ -48,7 +71,7 @@ const avatarPath = getAssetPath("avatar.png");
             <img src={avatarPath} alt="Piao 的头像" width="736" height="736" />
           </div>
           <div class="realtime">
-            <button class="status-trigger" aria-label="查看当前状态">
+            <button class="status-trigger" aria-label="查看当前状态" aria-expanded="false">
               <span aria-hidden="true">👻</span>
             </button>
             <div class="status-popover" role="status">
@@ -72,6 +95,26 @@ const avatarPath = getAssetPath("avatar.png");
             <IconRss />
           </a>
         </div>
+        {
+          recentPosts.length > 0 && (
+            <section class="recent-posts" aria-labelledby="recent-title">
+              <div class="recent-heading">
+                <h2 id="recent-title">最近文章</h2>
+                <a href={getRelativeLocaleUrl(locale, "posts")}>全部文章 →</a>
+              </div>
+              <ul>
+                {recentPosts.map(post => (
+                  <li>
+                    <a href={post.href}>
+                      <span class="recent-title">{post.title}</span>
+                      <time datetime={post.iso}>{post.label}</time>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
         <LeetCodeCard />
       </div>
     </section>
@@ -232,7 +275,8 @@ const avatarPath = getAssetPath("avatar.png");
     box-shadow: 0 14px 34px -12px rgb(0 0 0 / .62);
   }
   .realtime:hover .status-popover,
-  .realtime:focus-within .status-popover { opacity: 1; transform: none; }
+  .realtime:focus-within .status-popover,
+  .realtime.is-open .status-popover { opacity: 1; transform: none; }
   .split-line { display: block; height: 2px; margin: .35rem 0; border-radius: 3px; background: var(--accent-soft); }
   .status-popover time { color: var(--accent-strong); font-weight: 650; }
 
@@ -296,6 +340,26 @@ const avatarPath = getAssetPath("avatar.png");
   .social-button:focus-visible::after { opacity: 1; transform: translate(-50%, 0) scale(1); }
   .social-button svg { width: 1.25rem; }
 
+  .recent-posts { width: 100%; margin-top: 1.75rem; }
+  .recent-heading { display: flex; align-items: baseline; justify-content: space-between; padding: 0 .25rem .4rem; }
+  .recent-heading h2 { font-size: .8rem; font-weight: 650; }
+  .recent-heading a { color: var(--accent-strong); font-size: .72rem; text-decoration: none; }
+  .recent-heading a:hover { text-decoration: underline; }
+  .recent-posts ul { display: grid; grid-template-columns: minmax(0, 1fr); gap: .15rem; }
+  .recent-posts li a {
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+    padding: .45rem .5rem;
+    border-radius: .65rem;
+    text-decoration: none;
+    transition: background-color .15s;
+  }
+  .recent-posts li a:hover,
+  .recent-posts li a:focus-visible { background: var(--accent-soft); }
+  .recent-title { min-width: 0; flex: 1; overflow: hidden; font-size: .82rem; text-overflow: ellipsis; white-space: nowrap; }
+  .recent-posts time { flex: none; color: var(--accent-strong); font-family: var(--font-mono); font-size: .68rem; }
+
   .identity-footer {
     position: absolute;
     z-index: 1;
@@ -305,12 +369,13 @@ const avatarPath = getAssetPath("avatar.png");
     width: min(25rem, calc(100vw - 2rem));
     align-items: baseline;
     justify-content: space-between;
-    color: rgb(255 255 255 / .78);
+    color: var(--foreground);
+    transform: translateX(-50%);
   }
-  .identity-footer span { font-size: .85rem; }
-  .identity-footer strong { font-family: var(--font-mono); font-size: 1.6rem; letter-spacing: .04em; text-transform: uppercase; }
+  .identity-footer span { font-size: .85rem; opacity: .75; }
+  .identity-footer strong { font-family: var(--font-mono); font-size: 1.6rem; opacity: .85; letter-spacing: .04em; text-transform: uppercase; }
 
-  .ambient-shape { position: absolute; border: 3px solid rgb(255 255 255 / .10); }
+  .ambient-shape { position: absolute; border: 3px solid color-mix(in srgb, var(--surface) 55%, transparent); }
   .shape-circle { width: 4rem; height: 4rem; top: 9%; left: 9%; border-radius: 50%; }
   .shape-triangle { width: 5rem; height: 5rem; right: 8%; top: 18%; transform: rotate(28deg); border-radius: 1rem; }
   .shape-line { width: 9rem; height: 2rem; left: 12%; bottom: 15%; transform: rotate(-35deg); border-width: 0 0 3px; }
@@ -328,10 +393,19 @@ const avatarPath = getAssetPath("avatar.png");
 </style>
 
 <script>
+  // This module runs once; astro:page-load fires on every navigation, so keep
+  // the timer and listeners from the previous home visit and tear them down.
+  let clockTimer: number | undefined;
+  let pageListeners: AbortController | undefined;
+
   document.addEventListener("astro:page-load", () => {
+    window.clearInterval(clockTimer);
+    pageListeners?.abort();
+
     const localTime = document.querySelector<HTMLTimeElement>("#local-time");
+    if (!localTime) return; // not on the home page
+
     const updateLocalTime = () => {
-      if (!localTime) return;
       const now = new Date();
       localTime.dateTime = now.toISOString();
       localTime.textContent = `GMT+8 ${new Intl.DateTimeFormat("zh-CN", {
@@ -343,6 +417,41 @@ const avatarPath = getAssetPath("avatar.png");
       }).format(now)}`;
     };
     updateLocalTime();
-    window.setInterval(updateLocalTime, 1000);
+    clockTimer = window.setInterval(updateLocalTime, 1000);
+
+    // Touch devices don't focus buttons on tap, so toggle the popover on click.
+    const realtime = document.querySelector<HTMLElement>(".realtime");
+    const trigger = realtime?.querySelector<HTMLButtonElement>(".status-trigger");
+    if (!realtime || !trigger) return;
+    pageListeners = new AbortController();
+    const { signal } = pageListeners;
+    const setOpen = (open: boolean) => {
+      realtime.classList.toggle("is-open", open);
+      trigger.setAttribute("aria-expanded", String(open));
+    };
+    trigger.addEventListener(
+      "click",
+      () => {
+        const open = !realtime.classList.contains("is-open");
+        setOpen(open);
+        // :focus-within would otherwise keep it visible after closing.
+        if (!open) trigger.blur();
+      },
+      { signal }
+    );
+    document.addEventListener(
+      "click",
+      e => {
+        if (!realtime.contains(e.target as Node)) setOpen(false);
+      },
+      { signal }
+    );
+    document.addEventListener(
+      "keydown",
+      e => {
+        if (e.key === "Escape") setOpen(false);
+      },
+      { signal }
+    );
   });
 </script>

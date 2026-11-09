@@ -24,7 +24,13 @@ function reflect(): void {
   const root = document.firstElementChild;
   root?.setAttribute("data-theme", themeValue);
   root?.classList.toggle("dark", themeValue === DARK);
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+  // Describe the action, not the raw theme value, for screen readers.
+  document
+    .querySelector("#theme-btn")
+    ?.setAttribute(
+      "aria-label",
+      themeValue === DARK ? "切换到浅色模式" : "切换到深色模式"
+    );
 
   // Fill <meta name="theme-color"> with the computed background colour so
   // Android's browser chrome matches the page background.
@@ -60,10 +66,11 @@ document.addEventListener("astro:before-swap", event => {
   }
 });
 
-// Sync with OS-level dark/light preference changes.
+// Follow OS-level dark/light changes, unless the user picked a theme manually.
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", ({ matches }) => {
+    if (localStorage.getItem(THEME_KEY)) return;
     themeValue = matches ? DARK : LIGHT;
-    persist();
+    reflect();
   });

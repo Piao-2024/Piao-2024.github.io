@@ -13,8 +13,8 @@ export default defineAstroPaperConfig({
     dir: "ltr",
   },
   posts: {
-    perPage: 4,
-    perIndex: 6,
+    perPage: 10,
+    perIndex: 3, // recent posts shown on the home card
     scheduledPostMargin: 15 * 60 * 1000,
   },
   features: {

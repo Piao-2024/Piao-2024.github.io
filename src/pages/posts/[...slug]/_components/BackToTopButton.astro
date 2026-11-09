@@ -72,16 +72,24 @@ const t = useTranslations(Astro.currentLocale);
       }
     }
 
+    // Re-runs on every visit; remove the listener from the previous visit.
+    window.__backToTopScroll?.abort();
+    window.__backToTopScroll = new AbortController();
+
     let ticking = false;
-    document.addEventListener("scroll", () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
+    document.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      },
+      { signal: window.__backToTopScroll.signal }
+    );
   }
   backToTop();
 </script>

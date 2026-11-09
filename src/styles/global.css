@@ -6,6 +6,10 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @layer base {
+  html {
+    /* CJK fonts have no italic; don't let the browser fake a slanted one. */
+    font-synthesis-style: none;
+  }
   * {
     @apply border-border outline-accent/75;
     scrollbar-width: auto;
@@ -64,15 +68,15 @@
 .expanded-heading .eyebrow { font-family: var(--font-mono); color: var(--expanded-accent); font-size: .68rem; font-weight: 750; letter-spacing: .18em; }
 .expanded-heading h1 { margin-top: .35rem; font-size: 1.6rem; font-weight: 750; }
 .expanded-heading > span { color: var(--expanded-accent); font-size: .75rem; }
-.expanded-site-footer { display: flex; align-items: baseline; justify-content: space-between; padding: 1rem .25rem 0; color: rgb(255 255 255 / .78); }
-.expanded-site-footer span { font-size: .8rem; }
-.expanded-site-footer strong { font-family: var(--font-mono); font-size: 1.25rem; letter-spacing: .05em; text-transform: uppercase; }
+.expanded-site-footer { display: flex; align-items: baseline; justify-content: space-between; padding: 1rem .25rem 0; color: var(--foreground); }
+.expanded-site-footer span { font-size: .8rem; opacity: .75; }
+.expanded-site-footer strong { font-family: var(--font-mono); opacity: .85; font-size: 1.25rem; letter-spacing: .05em; text-transform: uppercase; }
 
 /* Post lists (Card.astro) inside expanded panels */
 .expanded-post-list > li { margin: 0; padding: 1.2rem .25rem; border-bottom: 1px solid var(--expanded-soft); }
 .expanded-post-list > li:last-child { border-bottom: 0; }
 .expanded-post-list > li > p { margin-top: .45rem; opacity: .72; }
-.expanded-ambient { position: absolute; border: 3px solid rgb(255 255 255 / .1); }
+.expanded-ambient { position: absolute; border: 3px solid color-mix(in srgb, var(--surface) 55%, transparent); }
 .expanded-ambient-circle { width: 5rem; height: 5rem; right: 8%; top: 10%; border-radius: 50%; }
 .expanded-ambient-line { width: 10rem; height: 2rem; left: 4%; bottom: 14%; border-width: 0 0 3px; transform: rotate(-32deg); }
 
