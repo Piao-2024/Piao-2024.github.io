@@ -1,34 +1,42 @@
 /* Register design tokens for Tailwind v4 */
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --font-app: var(--font-google-sans-code), "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  /* Reading text: system sans (SF/PingFang on Apple, Segoe/YaHei on Windows). */
+  --font-app: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  /* Code and small accent labels. Also feeds Tailwind's font-mono and <code>/<pre>. */
+  --font-mono: var(--font-google-sans-code), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
-/* Light theme values */
+/*
+ * Single source of truth for site colours.
+ * background = page canvas, surface = cards/panels.
+ */
 :root,
 [data-theme="light"] {
-  --background: #fcfcfd;
-  --foreground: #24242a;
-  --accent: #4f46e5;
+  --background: #d8e0e5;
+  --surface: #ffffff;
+  --foreground: #3d4e5b;
+  --accent: #718ca2;
   --accent-foreground: #ffffff;
-  --muted: #ececf3;
-  --muted-foreground: #71717a;
-  --border: #e4e4e7;
+  --muted: #eaf0f4;
+  --muted-foreground: #6b7c88;
+  --border: #e1e8ed;
 }
 
-/* Dark theme values */
 [data-theme="dark"] {
-  --background: #17171c;
-  --foreground: #f4f4f5;
-  --accent: #a5b4fc;
-  --accent-foreground: #ffffff;
-  --muted: #292932;
-  --muted-foreground: #a1a1aa;
-  --border: #3f3f46;
+  --background: #151c21;
+  --surface: #202a31;
+  --foreground: #e9f0f4;
+  --accent: #a9bfd0;
+  --accent-foreground: #151c21;
+  --muted: #303e48;
+  --muted-foreground: #9aabb7;
+  --border: #303e48;
 }

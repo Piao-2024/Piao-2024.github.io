@@ -11,15 +11,13 @@ const t = useTranslations(locale);
 
 {
   config.features.showBackButton && (
-    <div class="app-layout flex items-center justify-start">
-      <LinkButton
-        id="back-button"
-        href={getRelativeLocaleUrl(locale, "posts/")}
-        class="focus-outline hover:text-foreground/75 -ms-2 mt-8 mb-2"
-      >
-        <IconChevronLeft class="inline-block size-6 rtl:rotate-180" />
-        <span>{t.post.goBack}</span>
-      </LinkButton>
-    </div>
+    <LinkButton
+      id="back-button"
+      href={getRelativeLocaleUrl(locale, "posts/")}
+      class="focus-outline text-accent hover:text-foreground -ms-1 mb-4 text-sm"
+    >
+      <IconChevronLeft class="inline-block size-5 rtl:rotate-180" />
+      <span>{t.post.goBack}</span>
+    </LinkButton>
   )
 }

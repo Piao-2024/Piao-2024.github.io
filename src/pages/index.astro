@@ -35,6 +35,7 @@ const avatarPath = getAssetPath("avatar.png");
         <a class="nav-link" href={getRelativeLocaleUrl(locale, "tags")}>标签</a>
         <a class="nav-link" href={getRelativeLocaleUrl(locale, "archives")}>归档</a>
         <a class="nav-link" href={getRelativeLocaleUrl(locale, "album")}>相册</a>
+        <a class="nav-link" href={getRelativeLocaleUrl(locale, "search")}>搜索</a>
         <button id="theme-btn" class="theme-button" aria-label="切换主题" title="切换主题">
           <IconMoon class="moon-icon" />
           <IconSunHigh class="sun-icon" />
@@ -77,7 +78,7 @@ const avatarPath = getAssetPath("avatar.png");
 
     <footer class="identity-footer">
       <span>@ {new Date().getFullYear()}</span>
-      <strong>PIAO'S SPACE</strong>
+      <strong>{config.site.title}</strong>
     </footer>
   </main>
 </Layout>
@@ -90,10 +91,10 @@ const avatarPath = getAssetPath("avatar.png");
   }
 
   .identity-page {
-    --canvas: #d8e0e5;
-    --surface: #ffffff;
-    --accent-soft: #edf1fa;
-    --accent-strong: #6e87cc;
+    /* Aliases of the global tokens in styles/theme.css (also used by LeetCodeCard). */
+    --canvas: var(--background);
+    --accent-soft: var(--muted);
+    --accent-strong: var(--accent);
     position: relative;
     display: grid;
     min-height: 100svh;
@@ -101,15 +102,7 @@ const avatarPath = getAssetPath("avatar.png");
     overflow: hidden;
     padding: 2rem 1.25rem 5rem;
     background: var(--canvas);
-    color: #354263;
-  }
-
-  :global(html[data-theme="dark"]) .identity-page {
-    --canvas: #151c21;
-    --surface: #202638;
-    --accent-soft: #303a58;
-    --accent-strong: #a9b9ed;
-    color: #e8ecf8;
+    color: var(--foreground);
   }
 
   .identity-card {
@@ -245,7 +238,7 @@ const avatarPath = getAssetPath("avatar.png");
 
   .profile-copy { margin-top: 1.25rem; text-align: center; }
   .profile-copy h1 { font-size: 1.15rem; font-weight: 750; }
-  .profile-copy h1 span { color: var(--accent-strong); font-size: .75rem; font-weight: 500; }
+  .profile-copy h1 span { font-family: var(--font-mono); color: var(--accent-strong); font-size: .75rem; font-weight: 500; }
   .profile-copy > p { margin-top: .35rem; color: var(--accent-strong); font-size: .8rem; }
   .profile-copy .profile-description { margin-top: .75rem; color: currentColor; opacity: .72; }
 
@@ -315,7 +308,7 @@ const avatarPath = getAssetPath("avatar.png");
     color: rgb(255 255 255 / .78);
   }
   .identity-footer span { font-size: .85rem; }
-  .identity-footer strong { font-size: 1.6rem; letter-spacing: .04em; }
+  .identity-footer strong { font-family: var(--font-mono); font-size: 1.6rem; letter-spacing: .04em; text-transform: uppercase; }
 
   .ambient-shape { position: absolute; border: 3px solid rgb(255 255 255 / .10); }
   .shape-circle { width: 4rem; height: 4rem; top: 9%; left: 9%; border-radius: 50%; }

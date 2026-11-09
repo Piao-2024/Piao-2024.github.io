@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Layout from "@/layouts/Layout.astro";
-import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import ExpandedShell from "@/components/ExpandedShell.astro";
 import { PROVINCES } from "@/data/provinces";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -41,16 +41,8 @@ const photoCount = albums.reduce(
 <Layout
   title={`${t.pages.albumsTitle} | ${config.site.title}`}
   description={t.pages.albumsDesc}
-  bodyClass="expanded-identity-body"
 >
-  <div class="expanded-page">
-    <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true">
-    </div>
-    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true">
-    </div>
-    <div class="expanded-shell album-shell">
-      <CompactIdentityHeader active="albums" />
-      <div class="expanded-notice">▦ 一格一地，收藏走过的风景。</div>
+  <ExpandedShell active="albums" notice="▦ 一格一地，收藏走过的风景。">
       <main
         id="main-content"
         class="expanded-panel album-directory-panel"
@@ -126,17 +118,10 @@ const photoCount = albums.reduce(
           </div>
         </section>
       </main>
-      <footer class="expanded-site-footer">
-        <span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong>
-      </footer>
-    </div>
-  </div>
+  </ExpandedShell>
 </Layout>
 
 <style>
-  .album-shell {
-    width: min(74rem, calc(100% - 2rem));
-  }
   .album-directory-panel {
     padding-bottom: 1.5rem;
   }
@@ -312,9 +297,6 @@ const photoCount = albums.reduce(
     }
   }
   @media (max-width: 40rem) {
-    .album-shell {
-      width: min(100% - 1rem, 74rem);
-    }
     .album-directory-panel {
       padding: 1rem;
     }

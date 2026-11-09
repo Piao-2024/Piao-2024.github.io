@@ -47,21 +47,13 @@
   animation-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
 
-body.expanded-identity-body {
-  --expanded-canvas: #d8e0e5;
-  --expanded-surface: #fff;
-  --expanded-soft: #eaf0f4;
-  --expanded-accent: #718ca2;
-  --expanded-text: #3d4e5b;
-  background: var(--expanded-canvas);
-}
-
-html[data-theme="dark"] body.expanded-identity-body {
-  --expanded-canvas: #151c21;
-  --expanded-surface: #202a31;
-  --expanded-soft: #303e48;
-  --expanded-accent: #a9bfd0;
-  --expanded-text: #e9f0f4;
+/* Legacy aliases kept so existing page styles keep working; edit theme.css instead. */
+:root {
+  --expanded-canvas: var(--background);
+  --expanded-surface: var(--surface);
+  --expanded-soft: var(--muted);
+  --expanded-accent: var(--accent);
+  --expanded-text: var(--foreground);
 }
 
 .expanded-page { position: relative; min-height: 100svh; overflow: hidden; background: var(--expanded-canvas); color: var(--expanded-text); }
@@ -69,12 +61,17 @@ html[data-theme="dark"] body.expanded-identity-body {
 .expanded-notice { width: min(32rem, 100%); margin-top: .75rem; padding: .65rem 1rem; border-radius: 9999px; background: var(--expanded-surface); box-shadow: 0 12px 30px -18px rgb(76 98 110 / .28); color: var(--expanded-accent); font-size: .8rem; }
 .expanded-panel { margin-top: .75rem; padding: 1.5rem 2rem; border-radius: 2rem; background: var(--expanded-surface); box-shadow: 0 25px 50px -22px rgb(76 98 110 / .3); }
 .expanded-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--expanded-soft); }
-.expanded-heading .eyebrow { color: var(--expanded-accent); font-size: .68rem; font-weight: 750; letter-spacing: .18em; }
+.expanded-heading .eyebrow { font-family: var(--font-mono); color: var(--expanded-accent); font-size: .68rem; font-weight: 750; letter-spacing: .18em; }
 .expanded-heading h1 { margin-top: .35rem; font-size: 1.6rem; font-weight: 750; }
 .expanded-heading > span { color: var(--expanded-accent); font-size: .75rem; }
 .expanded-site-footer { display: flex; align-items: baseline; justify-content: space-between; padding: 1rem .25rem 0; color: rgb(255 255 255 / .78); }
 .expanded-site-footer span { font-size: .8rem; }
-.expanded-site-footer strong { font-size: 1.25rem; letter-spacing: .05em; }
+.expanded-site-footer strong { font-family: var(--font-mono); font-size: 1.25rem; letter-spacing: .05em; text-transform: uppercase; }
+
+/* Post lists (Card.astro) inside expanded panels */
+.expanded-post-list > li { margin: 0; padding: 1.2rem .25rem; border-bottom: 1px solid var(--expanded-soft); }
+.expanded-post-list > li:last-child { border-bottom: 0; }
+.expanded-post-list > li > p { margin-top: .45rem; opacity: .72; }
 .expanded-ambient { position: absolute; border: 3px solid rgb(255 255 255 / .1); }
 .expanded-ambient-circle { width: 5rem; height: 5rem; right: 8%; top: 10%; border-radius: 50%; }
 .expanded-ambient-line { width: 10rem; height: 2rem; left: 4%; bottom: 14%; border-width: 0 0 3px; transform: rotate(-32deg); }

@@ -1,0 +1,48 @@
+---
+import CompactIdentityHeader, {
+  type NavKey,
+} from "./CompactIdentityHeader.astro";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+type Props = {
+  /** Highlighted item in the compact nav. Omit when no item applies (e.g. 404). */
+  active?: NavKey;
+  /** Pill-shaped notice under the header. Use the "notice" slot for rich content. */
+  notice?: string;
+  /** Extra class for the shell (e.g. a wider width on album pages). */
+  shellClass?: string;
+};
+
+const { active, notice, shellClass } = Astro.props;
+const t = useTranslations(Astro.currentLocale ?? config.site.lang);
+---
+
+<a
+  href="#main-content"
+  class="bg-surface text-accent absolute inset-s-4 -top-full z-50 rounded-full px-4 py-2 shadow-lg transition-all focus:top-4"
+>
+  {t.a11y.skipToContent}
+</a>
+
+<div class="expanded-page">
+  <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true">
+  </div>
+  <div class="expanded-ambient expanded-ambient-line" aria-hidden="true"></div>
+  <div class:list={["expanded-shell", shellClass]}>
+    <CompactIdentityHeader active={active} />
+    {
+      (notice || Astro.slots.has("notice")) && (
+        <div class="expanded-notice">
+          {notice}
+          <slot name="notice" />
+        </div>
+      )
+    }
+    <slot />
+    <footer class="expanded-site-footer">
+      <span>@ {new Date().getFullYear()}</span>
+      <strong>{config.site.title}</strong>
+    </footer>
+  </div>
+</div>

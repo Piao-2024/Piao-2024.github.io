@@ -1,8 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import PostLayout from "@/layouts/PostLayout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import ExpandedShell from "@/components/ExpandedShell.astro";
 import Datetime from "@/components/Datetime.astro";
 import Tag from "@/components/Tag.astro";
 import { getPostSlug, getPostUrl } from "@/utils/getPostPaths";
@@ -104,71 +103,78 @@ const ogImage = ogImageUrl
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
 >
-  <Header />
-
-  <BackButton />
-
-  <main
-    id="main-content"
-    class:list={["app-layout", { "mt-8": !config.features.showBackButton }]}
-    data-pagefind-body
-  >
-    <h1
-      style={{ viewTransitionName: toTransitionName(post.id) }}
-      class="text-accent inline-block text-2xl font-bold sm:text-3xl"
+  <ExpandedShell active="posts">
+    <main
+      id="main-content"
+      class="expanded-panel post-panel"
+      data-pagefind-body
     >
-      {title}
-    </h1>
+      <div class="post-column">
+        <BackButton />
 
-    <div class="my-2 flex items-center gap-2">
-      <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
-      <span
-        aria-hidden="true"
-        class:list={[
-          "text-muted-foreground max-sm:hidden",
-          { hidden: !config.features.editPost?.enabled || hideEditPost },
-        ]}
-      >
-        |
-      </span>
-      <EditPost {hideEditPost} {post} class="max-sm:hidden" />
-    </div>
+        <header class:list={{ "mt-2": !config.features.showBackButton }}>
+          <h1
+            style={{ viewTransitionName: toTransitionName(post.id) }}
+            class="post-title"
+          >
+            {title}
+          </h1>
 
-    <article
-      id="article"
-      class:list={[
-        "mt-8 w-full",
-        "app-prose max-w-readable",
-        "prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)",
-      ]}
-    >
-      <Content />
-    </article>
+          <div class="my-3 flex items-center gap-2">
+            <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
+            <span
+              aria-hidden="true"
+              class:list={[
+                "text-muted-foreground max-sm:hidden",
+                { hidden: !config.features.editPost?.enabled || hideEditPost },
+              ]}
+            >
+              |
+            </span>
+            <EditPost {hideEditPost} {post} class="max-sm:hidden" />
+          </div>
+        </header>
 
-    <hr class="my-8 border-dashed" />
+        <article
+          id="article"
+          class:list={[
+            "mt-8 w-full",
+            "app-prose max-w-none",
+            "prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)",
+          ]}
+        >
+          <Content />
+        </article>
 
-    <EditPost class="sm:hidden" {hideEditPost} {post} />
+        <hr class="border-muted my-8" />
 
-    <BackToTopButton />
+        <EditPost class="sm:hidden" {hideEditPost} {post} />
 
-    <ul class="mt-4 mb-8 flex flex-wrap gap-4 sm:my-8">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} size="sm" />)}
-    </ul>
+        <BackToTopButton />
 
-    <ShareLinks />
+        <ul class="mt-4 mb-8 flex flex-wrap gap-3 sm:my-8">
+          {
+            tags.map(tag => (
+              <Tag tag={slugifyStr(tag)} tagName={tag} size="sm" />
+            ))
+          }
+        </ul>
 
-    <hr class="my-8 border-dashed" />
+        <ShareLinks />
 
-    <AdjacentPostNav {prevPost} {nextPost} />
-  </main>
-  <Footer />
+        <hr class="border-muted my-8" />
+
+        <AdjacentPostNav {prevPost} {nextPost} />
+      </div>
+    </main>
+  </ExpandedShell>
 </PostLayout>
 
 <script is:inline data-astro-rerun>
   function createProgressBar() {
     const progressContainer = document.createElement("div");
     progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+      "progress-container fixed top-0 z-10 h-1 w-full bg-transparent";
 
     const progressBar = document.createElement("div");
     progressBar.className = "progress-bar h-1 w-0 bg-accent";
@@ -532,3 +538,30 @@ const ogImage = ogImageUrl
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
 </script>
+
+<style>
+  @reference "../../../styles/global.css";
+
+  .post-panel {
+    padding-block: 2rem 1rem;
+  }
+  /* Centred reading column inside the wide panel */
+  .post-column {
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+  .post-title {
+    color: var(--foreground);
+    font-size: 1.75rem;
+    font-weight: 750;
+    line-height: 1.35;
+  }
+  @media (min-width: 40rem) {
+    .post-panel {
+      padding: 2.5rem 2rem 1.5rem;
+    }
+    .post-title {
+      font-size: 2rem;
+    }
+  }
+</style>

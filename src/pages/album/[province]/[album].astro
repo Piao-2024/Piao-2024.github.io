@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Layout from "@/layouts/Layout.astro";
-import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import ExpandedShell from "@/components/ExpandedShell.astro";
 import PhotoGallery from "@/components/gallery/PhotoGallery.astro";
 import config from "@/config";
 
@@ -33,18 +33,11 @@ const dateText = albumDate
   title={`${title} | ${province.name}摄影相册`}
   description={description}
   ogImage={entry.data.cover}
-  bodyClass="expanded-identity-body"
 >
-  <div class="expanded-page">
-    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true">
-    </div>
-    <div class="expanded-shell photo-shell">
-      <CompactIdentityHeader active="albums" />
-      <div class="expanded-notice">
-        <a href={getRelativeLocaleUrl(locale, `album/${province.slug}`)}
+  <ExpandedShell active="albums" shellClass="photo-shell">
+      <a slot="notice" href={getRelativeLocaleUrl(locale, `album/${province.slug}`)}
           >← 返回{province.name}</a
         >
-      </div>
       <main
         id="main-content"
         class="expanded-panel photo-panel"
@@ -66,18 +59,14 @@ const dateText = albumDate
           galleryId={`gallery-${entry.id.replace(/[^a-z0-9-]/gi, "-")}`}
         />
       </main>
-      <footer class="expanded-site-footer">
-        <span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong>
-      </footer>
-    </div>
-  </div>
+  </ExpandedShell>
 </Layout>
 
 <style>
-  .photo-shell {
+  :global(.photo-shell) {
     width: min(76rem, calc(100% - 2rem));
   }
-  .expanded-notice a {
+  :global(.expanded-notice) a {
     color: inherit;
     text-decoration: none;
   }
@@ -134,7 +123,7 @@ const dateText = albumDate
     opacity: 0.55;
   }
   @media (max-width: 40rem) {
-    .photo-shell {
+    :global(.photo-shell) {
       width: min(100% - 1rem, 76rem);
     }
     .photo-panel {

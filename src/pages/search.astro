@@ -2,10 +2,7 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import "@pagefind/default-ui/css/ui.css";
 import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/Header.astro";
-import Breadcrumb from "@/components/Breadcrumb.astro";
-import Main from "@/components/Main.astro";
-import Footer from "@/components/Footer.astro";
+import ExpandedShell from "@/components/ExpandedShell.astro";
 import { getAssetPath } from "@/utils/withBase";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -28,21 +25,25 @@ const t = useTranslations(locale);
 ---
 
 <Layout title={`${t.pages.searchTitle} | ${config.site.title}`}>
-  <Header />
-
-  <Breadcrumb />
-
-  <Main pageTitle={t.pages.searchTitle} pageDesc={t.pages.searchDesc}>
-    <div
-      id="pagefind-search"
-      transition:persist
-      data-backurl={backUrl}
-      data-bundle-path={pagefindBundlePath}
-    >
-    </div>
-  </Main>
-
-  <Footer />
+  <ExpandedShell active="search">
+    <main id="main-content" class="expanded-panel">
+      <div class="expanded-heading">
+        <div>
+          <p class="eyebrow">SEARCH</p>
+          <h1>{t.pages.searchTitle}</h1>
+        </div>
+        <span>{t.pages.searchDesc}</span>
+      </div>
+      <div
+        id="pagefind-search"
+        class="mt-6"
+        transition:persist
+        data-backurl={backUrl}
+        data-bundle-path={pagefindBundlePath}
+      >
+      </div>
+    </main>
+  </ExpandedShell>
 </Layout>
 
 <script>
@@ -126,11 +127,11 @@ const t = useTranslations(locale);
   #pagefind-search {
     --pagefind-ui-font: var(--font-app);
     --pagefind-ui-text: var(--foreground);
-    --pagefind-ui-background: var(--background);
+    --pagefind-ui-background: var(--surface);
     --pagefind-ui-border: var(--border);
     --pagefind-ui-primary: var(--accent);
-    --pagefind-ui-tag: var(--background);
-    --pagefind-ui-border-radius: 0.375rem;
+    --pagefind-ui-tag: var(--muted);
+    --pagefind-ui-border-radius: 1rem;
     --pagefind-ui-border-width: 1px;
     --pagefind-ui-image-border-radius: 8px;
     --pagefind-ui-image-box-ratio: 3 / 2;

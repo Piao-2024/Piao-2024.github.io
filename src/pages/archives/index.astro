@@ -2,7 +2,7 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import ExpandedShell from "@/components/ExpandedShell.astro";
 import Card from "@/components/Card.astro";
 import { postFilter } from "@/utils/postFilter";
 import { getPostsByGroupCondition } from "./_utils/getPostsByGroupCondition";
@@ -24,13 +24,8 @@ const filteredPosts = posts.filter(postFilter);
 const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
 ---
 
-<Layout title={`${t.pages.archivesTitle} | ${config.site.title}`} bodyClass="expanded-identity-body">
-  <div class="expanded-page">
-    <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true"></div>
-    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true"></div>
-    <div class="expanded-shell">
-      <CompactIdentityHeader active="archives" />
-      <div class="expanded-notice">⌁ 沿着时间回看写过的内容。</div>
+<Layout title={`${t.pages.archivesTitle} | ${config.site.title}`}>
+  <ExpandedShell active="archives" notice="⌁ 沿着时间回看写过的内容。">
       <main id="main-content" class="expanded-panel archive-panel" data-pagefind-body>
         <div class="expanded-heading">
           <div><p class="eyebrow">TIMELINE</p><h1>{t.pages.archivesTitle}</h1></div>
@@ -87,9 +82,7 @@ const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
         ))
     }
       </main>
-      <footer class="expanded-site-footer"><span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong></footer>
-    </div>
-  </div>
+  </ExpandedShell>
 </Layout>
 
 <style>

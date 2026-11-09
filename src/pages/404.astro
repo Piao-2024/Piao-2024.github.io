@@ -1,9 +1,7 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import LinkButton from "@/components/LinkButton.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import Layout from "@/layouts/Layout.astro";
+import ExpandedShell from "@/components/ExpandedShell.astro";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
@@ -12,24 +10,46 @@ const t = useTranslations(locale);
 ---
 
 <Layout title={`${t.notFound.title} | ${config.site.title}`}>
-  <Header />
-
-  <main
-    id="main-content"
-    class="app-layout my-1 flex flex-1 items-center justify-center"
-  >
-    <div class="mb-14 flex flex-col items-center justify-center">
-      <h1 class="text-accent text-9xl font-bold">404</h1>
-      <span aria-hidden="true"> ¯\_(ツ)_/¯ </span>
-      <p class="mt-4 text-2xl sm:text-3xl">{t.notFound.message}</p>
-      <LinkButton
-        href={getRelativeLocaleUrl(locale, "")}
-        class="my-6 text-lg underline decoration-dashed underline-offset-8"
-      >
-        {t.notFound.goHome}
-      </LinkButton>
-    </div>
-  </main>
-
-  <Footer />
+  <ExpandedShell>
+    <main id="main-content" class="expanded-panel not-found">
+      <p class="code">404</p>
+      <span aria-hidden="true">¯\_(ツ)_/¯</span>
+      <h1>{t.notFound.message}</h1>
+      <a href={getRelativeLocaleUrl(locale, "")}>{t.notFound.goHome}</a>
+    </main>
+  </ExpandedShell>
 </Layout>
+
+<style>
+  .not-found {
+    display: flex;
+    min-height: 24rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .code {
+    color: var(--accent);
+    font-size: clamp(5rem, 18vw, 8rem);
+    font-weight: 750;
+    line-height: 1;
+  }
+  h1 {
+    margin-top: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 650;
+  }
+  a {
+    margin-top: 1.25rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 9999px;
+    background: var(--muted);
+    color: var(--accent);
+    text-decoration: none;
+  }
+  a:hover {
+    transform: translateY(-2px);
+  }
+</style>

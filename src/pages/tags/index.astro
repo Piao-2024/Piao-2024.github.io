@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import CompactIdentityHeader from "@/components/CompactIdentityHeader.astro";
+import ExpandedShell from "@/components/ExpandedShell.astro";
 import Tag from "@/components/Tag.astro";
 import { getUniqueTags } from "@/utils/getUniqueTags";
 import { useTranslations } from "@/i18n";
@@ -14,13 +14,8 @@ const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
 ---
 
-<Layout title={`${t.pages.tagsTitle} | ${config.site.title}`} bodyClass="expanded-identity-body">
-  <div class="expanded-page">
-    <div class="expanded-ambient expanded-ambient-circle" aria-hidden="true"></div>
-    <div class="expanded-ambient expanded-ambient-line" aria-hidden="true"></div>
-    <div class="expanded-shell">
-      <CompactIdentityHeader active="tags" />
-      <div class="expanded-notice"># 按主题浏览我的全部记录。</div>
+<Layout title={`${t.pages.tagsTitle} | ${config.site.title}`}>
+  <ExpandedShell active="tags" notice="# 按主题浏览我的全部记录。">
       <main id="main-content" class="expanded-panel" data-pagefind-body>
         <div class="expanded-heading">
           <div><p class="eyebrow">TOPICS</p><h1>{t.pages.tagsTitle}</h1></div>
@@ -30,9 +25,7 @@ const t = useTranslations(locale);
           {tags.map(({ tag, tagName }) => <Tag {tag} {tagName} />)}
         </ul>
       </main>
-      <footer class="expanded-site-footer"><span>@ {new Date().getFullYear()}</span><strong>PIAO'S SPACE</strong></footer>
-    </div>
-  </div>
+  </ExpandedShell>
 </Layout>
 
 <style>
