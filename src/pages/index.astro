@@ -13,6 +13,7 @@ import timezone from "dayjs/plugin/timezone";
 import { getAssetPath } from "@/utils/withBase";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { getPostUrl } from "@/utils/getPostPaths";
+import { profile } from "@/data/profile";
 import config from "@/config";
 
 dayjs.extend(utc);
@@ -58,7 +59,6 @@ const recentPosts = getSortedPosts(await getCollection("posts"))
         <a class="nav-link" href={getRelativeLocaleUrl(locale, "tags")}>标签</a>
         <a class="nav-link" href={getRelativeLocaleUrl(locale, "archives")}>归档</a>
         <a class="nav-link" href={getRelativeLocaleUrl(locale, "album")}>相册</a>
-        <a class="nav-link" href={getRelativeLocaleUrl(locale, "search")}>搜索</a>
         <button id="theme-btn" class="theme-button" aria-label="切换主题" title="切换主题">
           <IconMoon class="moon-icon" />
           <IconSunHigh class="sun-icon" />
@@ -85,8 +85,8 @@ const recentPosts = getSortedPosts(await getCollection("posts"))
 
         <div class="profile-copy">
           <h1 id="profile-name">Piao <span>@Piao-2024</span></h1>
-          <p>Coding and living.</p>
-          <p class="profile-description">无限进步</p>
+          <p>{profile.tagline}</p>
+          <p class="profile-description">{profile.motto}</p>
         </div>
 
         <div class="social-row">

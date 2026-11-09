@@ -26,7 +26,7 @@ const monthFormatter = new Intl.DateTimeFormat(locale, { month: "long" });
 
 <Layout title={`${t.pages.archivesTitle} | ${config.site.title}`}>
   <ExpandedShell active="archives" notice="⌁ 沿着时间回看写过的内容。">
-      <main id="main-content" class="expanded-panel archive-panel" data-pagefind-body>
+      <main id="main-content" class="expanded-panel archive-panel">
         <div class="expanded-heading">
           <div><p class="eyebrow">TIMELINE</p><h1>{t.pages.archivesTitle}</h1></div>
           <span>{filteredPosts.length} 篇文章</span>

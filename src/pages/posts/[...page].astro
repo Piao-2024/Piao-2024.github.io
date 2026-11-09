@@ -5,6 +5,7 @@ import Layout from "@/layouts/Layout.astro";
 import ExpandedShell from "@/components/ExpandedShell.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
+import PostSearch from "@/components/PostSearch.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
@@ -22,18 +23,21 @@ const t = useTranslations(locale);
 
 <Layout title={`${t.pages.postsTitle} | ${config.site.title}`}>
   <ExpandedShell active="posts" notice="✎ 欢迎来到我的文章记录。">
-    <main id="main-content" class="expanded-panel" data-pagefind-body>
+    <main id="main-content" class="expanded-panel">
       <div class="expanded-heading">
         <div>
           <p class="eyebrow">WRITING</p>
           <h1>{t.pages.postsTitle}</h1>
         </div>
-        <span>第 {page.currentPage} / {page.lastPage} 页</span>
+        <span data-search-hide>第 {page.currentPage} / {page.lastPage} 页</span>
       </div>
-      <ul class="expanded-post-list">
-        {page.data.map(data => <Card {...data} />)}
-      </ul>
-      <Pagination {page} />
+      <PostSearch />
+      <div data-search-hide>
+        <ul class="expanded-post-list">
+          {page.data.map(data => <Card {...data} />)}
+        </ul>
+        <Pagination {page} />
+      </div>
     </main>
   </ExpandedShell>
 </Layout>

@@ -1,0 +1,184 @@
+---
+/**
+ * Inline Pagefind search for the posts list.
+ * While a query is active, every element marked `data-search-hide` on the
+ * page (the post list and pagination) is hidden and results show instead.
+ * Supports `?q=` so searches can be linked to (e.g. old /search/?q= URLs).
+ */
+import "@pagefind/default-ui/css/ui.css";
+import { getAssetPath } from "@/utils/withBase";
+import config from "@/config";
+
+const enabled = config.features.search === "pagefind";
+const bundlePath = getAssetPath("pagefind/");
+---
+
+{
+  enabled && (
+    <div class="post-search">
+      {import.meta.env.DEV && (
+        <p class="dev-hint">
+          开发模式下没有搜索索引，先运行一次 <code>npm run build</code>。
+        </p>
+      )}
+      <div data-post-search data-bundle-path={bundlePath} />
+    </div>
+  )
+}
+
+<script>
+  function setSearching(active: boolean) {
+    document
+      .querySelectorAll<HTMLElement>("[data-search-hide]")
+      .forEach(el => (el.hidden = active));
+  }
+
+  function syncQueryParam(query: string) {
+    const params = new URLSearchParams(window.location.search);
+    if (query) params.set("q", query);
+    else params.delete("q");
+    const search = params.toString();
+    history.replaceState(
+      history.state,
+      "",
+      window.location.pathname + (search ? `?${search}` : "")
+    );
+  }
+
+  function initPostSearch() {
+    const root = document.querySelector<HTMLElement>("[data-post-search]");
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = "true";
+
+    const bundlePath = root.dataset.bundlePath;
+    if (!bundlePath) return;
+
+    const reset = () => {
+      setSearching(false);
+      syncQueryParam("");
+    };
+
+    const onIdle =
+      window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
+
+    onIdle(async () => {
+      // @ts-expect-error — Missing types for @pagefind/default-ui package.
+      const { PagefindUI } = await import("@pagefind/default-ui");
+
+      const search = new PagefindUI({
+        element: "[data-post-search]",
+        bundlePath,
+        showImages: false,
+        showSubResults: true,
+        translations: {
+          placeholder: "搜索文章标题与正文…",
+          clear_search: "清除",
+          load_more: "加载更多结果",
+          search_label: "搜索文章",
+          zero_results: "没有找到与 [SEARCH_TERM] 相关的文章",
+          many_results: "找到 [COUNT] 篇与 [SEARCH_TERM] 相关的文章",
+          one_result: "找到 [COUNT] 篇与 [SEARCH_TERM] 相关的文章",
+          searching: "正在搜索 [SEARCH_TERM]…",
+        },
+        processTerm(term: string) {
+          syncQueryParam(term.trim());
+          return term;
+        },
+      });
+
+      const query = new URLSearchParams(window.location.search).get("q");
+      if (query) {
+        setSearching(true);
+        search.triggerSearch(query);
+      }
+
+      // Toggle from the input itself: processTerm only fires once the search
+      // engine has loaded, and never when the box is emptied.
+      root.addEventListener("input", e => {
+        const value = (e.target as HTMLInputElement).value?.trim() ?? "";
+        if (value) setSearching(true);
+        else reset();
+      });
+      root.addEventListener("click", e => {
+        if ((e.target as Element).closest(".pagefind-ui__search-clear")) {
+          reset();
+        }
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initPostSearch);
+</script>
+
+<style is:global>
+  .post-search {
+    margin-top: 1.25rem;
+  }
+  .post-search .dev-hint {
+    margin-bottom: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.75rem;
+    background: var(--muted);
+    font-size: 0.8rem;
+  }
+  [data-post-search] {
+    --pagefind-ui-font: var(--font-app);
+    --pagefind-ui-text: var(--foreground);
+    --pagefind-ui-background: var(--surface);
+    --pagefind-ui-border: var(--border);
+    --pagefind-ui-primary: var(--accent);
+    --pagefind-ui-tag: var(--muted);
+    --pagefind-ui-border-radius: 9999px;
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-scale: 0.85;
+
+    form::before {
+      background-color: var(--muted-foreground);
+    }
+    input {
+      font-weight: 400;
+      background: var(--muted);
+      border-color: transparent;
+    }
+    input::placeholder {
+      color: var(--muted-foreground);
+      opacity: 1;
+    }
+    input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+    .pagefind-ui__search-clear {
+      background: transparent;
+      color: var(--muted-foreground);
+    }
+    .pagefind-ui__message {
+      color: var(--muted-foreground);
+      font-size: 0.85rem;
+    }
+    .pagefind-ui__result {
+      border-top-color: var(--muted);
+    }
+    .pagefind-ui__result-title a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .pagefind-ui__result-title a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .pagefind-ui__result-excerpt mark {
+      background: color-mix(in srgb, var(--accent) 25%, transparent);
+      color: inherit;
+    }
+    .pagefind-ui__button {
+      border-radius: 9999px;
+      border-color: var(--muted);
+      background: var(--muted);
+      color: var(--accent);
+    }
+    .pagefind-ui__result-nested .pagefind-ui__result-link:before {
+      font-family: system-ui;
+    }
+  }
+</style>
