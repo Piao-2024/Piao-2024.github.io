@@ -70,7 +70,8 @@
 :root[data-identity-morph]::view-transition-group(identity-nav),
 :root[data-identity-morph]::view-transition-group(identity-avatar),
 :root[data-identity-morph]::view-transition-group(identity-copy) {
-  animation-duration: 480ms;
+  animation-duration: 750ms;
+  animation-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
 
 ::view-transition-group(identity-card) {
@@ -114,16 +115,16 @@
 :root[data-identity-morph]::view-transition-old(identity-nav),
 :root[data-identity-morph]::view-transition-old(identity-copy) {
   opacity: 1;
-  animation: identity-content-out 100ms ease-out both;
+  animation: identity-content-out 150ms ease-out both;
 }
 
 :root[data-identity-morph]::view-transition-new(identity-nav) {
-  animation: identity-content-in 180ms ease-out 120ms both;
+  animation: identity-content-in 280ms ease-out 180ms both;
 }
 
 /* Let the avatar settle beside the text before the new copy becomes visible. */
 :root[data-identity-morph]::view-transition-new(identity-copy) {
-  animation: identity-content-in 180ms ease-out 200ms both;
+  animation: identity-content-in 280ms ease-out 320ms both;
 }
 
 ::view-transition-group(identity-avatar) {
@@ -153,11 +154,11 @@
 }
 
 :root[data-identity-morph]::view-transition-old(root) {
-  animation: identity-content-out 100ms ease-out both;
+  animation: identity-content-out 150ms ease-out both;
 }
 
 :root[data-identity-morph]::view-transition-new(root) {
-  animation: identity-content-in 220ms ease-out 180ms both;
+  animation: identity-content-in 320ms ease-out 280ms both;
 }
 
 @media (prefers-reduced-motion: reduce) {
