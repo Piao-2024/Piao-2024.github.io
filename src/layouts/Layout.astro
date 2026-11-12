@@ -125,6 +125,17 @@ const rssHref = getRelativeLocaleUrl(
     <slot />
     <script>
       import "@/scripts/theme";
+
+      // The large morph is only for entering or leaving the home profile.
+      // Other tabs share the same compact header and should stay still.
+      document.addEventListener("astro:before-swap", event => {
+        const fromHome = document.body.classList.contains("identity-body");
+        const toHome = event.newDocument.body.classList.contains("identity-body");
+        event.newDocument.documentElement.toggleAttribute(
+          "data-identity-morph",
+          fromHome !== toHome
+        );
+      });
     </script>
   </body>
 </html>

@@ -48,8 +48,9 @@ const recentPosts = getSortedPosts(await getCollection("posts"))
     <div class="ambient-shape shape-triangle" aria-hidden="true"></div>
     <div class="ambient-shape shape-line" aria-hidden="true"></div>
 
-    <section class="identity-card" aria-labelledby="profile-name" transition:name="identity-card">
-      <nav class="card-nav" aria-label="主要导航">
+    <section class="identity-card" aria-labelledby="profile-name">
+      <div class="identity-surface" aria-hidden="true" transition:name="identity-card"></div>
+      <nav class="card-nav" aria-label="主要导航" transition:name="identity-nav">
         <a
           class="nav-link is-active"
           href={getRelativeLocaleUrl(locale, "")}
@@ -67,7 +68,7 @@ const recentPosts = getSortedPosts(await getCollection("posts"))
 
       <div class="card-content">
         <div class="avatar-area">
-          <div class="avatar">
+          <div class="avatar" transition:name="identity-avatar">
             <img src={avatarPath} alt="Piao 的头像" width="736" height="736" />
           </div>
           <div class="realtime">
@@ -83,7 +84,7 @@ const recentPosts = getSortedPosts(await getCollection("posts"))
           </div>
         </div>
 
-        <div class="profile-copy">
+        <div class="profile-copy" transition:name="identity-copy">
           <h1 id="profile-name">Piao <span>@Piao-2024</span></h1>
           <p>{profile.tagline}</p>
           <p class="profile-description">{profile.motto}</p>
@@ -150,6 +151,7 @@ const recentPosts = getSortedPosts(await getCollection("posts"))
 
   .identity-card {
     position: relative;
+    isolation: isolate;
     z-index: 2;
     display: flex;
     width: min(25rem, calc(100vw - 2rem));
@@ -157,8 +159,7 @@ const recentPosts = getSortedPosts(await getCollection("posts"))
     flex-direction: column;
     overflow: visible;
     border-radius: 2rem;
-    background: var(--surface);
-    box-shadow: 0 25px 50px -12px rgb(76 98 157 / .25);
+    --identity-shadow: 0 25px 50px -12px rgb(76 98 157 / .25);
   }
 
   .card-nav {

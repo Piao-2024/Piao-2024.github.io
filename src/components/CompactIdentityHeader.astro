@@ -20,8 +20,9 @@ const locale = Astro.currentLocale ?? config.site.lang;
 const avatarPath = getAssetPath("avatar.png");
 ---
 
-<header class="compact-card" transition:name="identity-card">
-  <nav class="compact-nav" aria-label="主要导航">
+<header class="compact-card">
+  <div class="identity-surface" aria-hidden="true" transition:name="identity-card"></div>
+  <nav class="compact-nav" aria-label="主要导航" transition:name="identity-nav">
     <a href={getRelativeLocaleUrl(locale, "")}>关于</a>
     {
       navItems.map(({ key, label, path }) => (
@@ -39,10 +40,10 @@ const avatarPath = getAssetPath("avatar.png");
     </button>
   </nav>
   <div class="compact-profile">
-    <div class="compact-avatar">
+    <div class="compact-avatar" transition:name="identity-avatar">
       <img src={avatarPath} alt="Piao 的头像" width="736" height="736" />
     </div>
-    <div>
+    <div transition:name="identity-copy">
       <strong>Piao <span>@Piao-2024</span></strong>
       <p class="compact-tagline">{profile.tagline}</p>
       <p>{profile.motto}</p>
@@ -53,13 +54,14 @@ const avatarPath = getAssetPath("avatar.png");
 <style>
   @reference "../styles/global.css";
   .compact-card {
+    position: relative;
+    isolation: isolate;
     width: min(29rem, 100%);
     min-height: 10.625rem;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 2rem;
-    background: var(--expanded-surface);
     color: var(--expanded-text);
-    box-shadow: 0 25px 50px -20px rgb(76 98 157 / .24);
+    --identity-shadow: 0 25px 50px -20px rgb(76 98 157 / .24);
   }
   .compact-nav { display: flex; height: 4rem; align-items: center; gap: .65rem; padding: 1rem 1.25rem; overflow-x:auto; scrollbar-width:none; }
   .compact-nav::-webkit-scrollbar { display:none; }

@@ -46,9 +46,126 @@
   scroll-margin-block: 1rem;
 }
 
+.identity-surface {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--surface);
+  box-shadow: var(--identity-shadow);
+  pointer-events: none;
+}
+
+/* Capture the surface and shared content separately so text never gets squashed
+   when the tall home card becomes a short header. */
+::view-transition-group(identity-card),
+::view-transition-group(identity-nav),
+::view-transition-group(identity-avatar),
+::view-transition-group(identity-copy) {
+  animation-duration: 180ms;
+  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
+}
+
+:root[data-identity-morph]::view-transition-group(identity-card),
+:root[data-identity-morph]::view-transition-group(identity-nav),
+:root[data-identity-morph]::view-transition-group(identity-avatar),
+:root[data-identity-morph]::view-transition-group(identity-copy) {
+  animation-duration: 480ms;
+}
+
 ::view-transition-group(identity-card) {
-  animation-duration: 650ms;
-  animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+  z-index: 1;
+  border-radius: 2rem;
+  background: var(--surface);
+  box-shadow: 0 25px 50px -16px rgb(76 98 157 / .24);
+}
+
+/* Paint the moving surface directly, keeping its corners round at every size. */
+::view-transition-image-pair(identity-card) {
+  visibility: hidden;
+}
+
+::view-transition-group(identity-nav),
+::view-transition-group(identity-copy) {
+  z-index: 2;
+}
+
+::view-transition-old(identity-nav),
+::view-transition-new(identity-nav),
+::view-transition-old(identity-copy),
+::view-transition-new(identity-copy) {
+  width: 100%;
+  height: 100%;
+  object-fit: none;
+}
+
+::view-transition-old(identity-nav),
+::view-transition-old(identity-copy) {
+  animation: none;
+  opacity: 0;
+}
+
+::view-transition-new(identity-nav),
+::view-transition-new(identity-copy) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+:root[data-identity-morph]::view-transition-old(identity-nav),
+:root[data-identity-morph]::view-transition-old(identity-copy) {
+  opacity: 1;
+  animation: identity-content-out 100ms ease-out both;
+}
+
+:root[data-identity-morph]::view-transition-new(identity-nav) {
+  animation: identity-content-in 180ms ease-out 120ms both;
+}
+
+/* Let the avatar settle beside the text before the new copy becomes visible. */
+:root[data-identity-morph]::view-transition-new(identity-copy) {
+  animation: identity-content-in 180ms ease-out 200ms both;
+}
+
+::view-transition-group(identity-avatar) {
+  z-index: 3;
+}
+
+/* It is the same image on both pages; one snapshot scales without ghosting. */
+::view-transition-old(identity-avatar) {
+  animation: none;
+  opacity: 0;
+}
+
+::view-transition-new(identity-avatar) {
+  width: 100%;
+  height: 100%;
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+@keyframes identity-content-out {
+  to { opacity: 0; }
+}
+
+@keyframes identity-content-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+:root[data-identity-morph]::view-transition-old(root) {
+  animation: identity-content-out 100ms ease-out both;
+}
+
+:root[data-identity-morph]::view-transition-new(root) {
+  animation: identity-content-in 220ms ease-out 180ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 /* Legacy aliases kept so existing page styles keep working; edit theme.css instead. */
